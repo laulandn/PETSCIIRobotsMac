@@ -1,18 +1,14 @@
 #ifndef _PALETTE_H
 #define _PALETTE_H
 
-
-#define __inline inline
-
-
 #include "Platform.h"
 
-class Palette2 {
+class Palette {
 public:
     static void initialize();
 
-    Palette2(const uint16_t* palette = 0, uint16_t colorCount = 0, uint16_t fade = 15, uint16_t fadeBaseColor = 0x000);
-    ~Palette2();
+    Palette(const uint16_t* palette = 0, uint16_t colorCount = 0, uint16_t fade = 15, uint16_t fadeBaseColor = 0x000);
+    ~Palette();
 
     void setPalette(const uint16_t* palette, uint16_t colorCount);
     void setFade(uint16_t fade);

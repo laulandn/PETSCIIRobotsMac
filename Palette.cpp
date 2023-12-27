@@ -2,7 +2,7 @@
 
 static uint8_t fadeTable[16][16];
 
-void Palette2::initialize()
+void Palette::initialize()
 {
     for (int fade = 1; fade < 16; fade++) {
         for (int value = 0; value < 16; value++) {
@@ -11,7 +11,7 @@ void Palette2::initialize()
     }
 }
 
-Palette2::Palette2(const uint16_t* palette, uint16_t colorCount, uint16_t fade, uint16_t fadeBaseColor) :
+Palette::Palette(const uint16_t* palette, uint16_t colorCount, uint16_t fade, uint16_t fadeBaseColor) :
     sourcePalette(0),
     currentPalette(0),
     fade_(fade),
@@ -26,13 +26,13 @@ Palette2::Palette2(const uint16_t* palette, uint16_t colorCount, uint16_t fade, 
     }
 }
 
-Palette2::~Palette2()
+Palette::~Palette()
 {
     delete[] sourcePalette;
     delete[] currentPalette;
 }
 
-void Palette2::setPalette(const uint16_t* palette, uint16_t colorCount)
+void Palette::setPalette(const uint16_t* palette, uint16_t colorCount)
 {
     delete[] sourcePalette;
     delete[] currentPalette;
@@ -47,28 +47,28 @@ void Palette2::setPalette(const uint16_t* palette, uint16_t colorCount)
     }
 }
 
-void Palette2::setFade(uint16_t fade)
+void Palette::setFade(uint16_t fade)
 {
     fade_ = fade;
     update();
 }
 
-uint16_t Palette2::fade() const
+uint16_t Palette::fade() const
 {
     return fade_;
 }
 
-void Palette2::setFadeBaseColor(uint16_t fadeBaseColor)
+void Palette::setFadeBaseColor(uint16_t fadeBaseColor)
 {
     this->fadeBaseColor = fadeBaseColor;
 }
 
-uint16_t* Palette2::palette() const
+uint16_t* Palette::palette() const
 {
     return currentPalette;
 }
 
-void Palette2::update()
+void Palette::update()
 {
     uint16_t baseR = fadeBaseColor >> 8;
     uint16_t baseG = (fadeBaseColor & 0x0f0) >> 4;

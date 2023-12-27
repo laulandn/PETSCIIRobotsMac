@@ -50,9 +50,9 @@ static int8_t animTileMap[256] = {
 static char MAPNAME[] = "level-a";
 #ifdef PLATFORM_IMAGE_SUPPORT
 static const char* imageFilenames[] = {
-    "introscreen.iff",
-    "gamescreen.iff",
-    "gameover.iff"
+    "introscreen.png",
+    "gamescreen.png",
+    "gameover.png"
 };
 #endif
 #ifdef PLATFORM_MODULE_BASED_AUDIO
@@ -144,7 +144,7 @@ static uint16_t joystickButtons[] = {
 
 PlatformSDL::PlatformSDL() :
     interrupt(0),
-    //audioSpec({0}),
+    audioSpec({0}),
     audioDeviceID(0),
     joystick(0),
     window(0),
@@ -169,7 +169,7 @@ PlatformSDL::PlatformSDL() :
 #endif
 #ifdef PLATFORM_CURSOR_SUPPORT
     cursorSurface(0),
-    //cursorRect({0}),
+    cursorRect({0}),
 #ifdef PLATFORM_CURSOR_SHAPE_SUPPORT
     cursorShape(ShapeUse),
 #endif
@@ -229,19 +229,16 @@ PlatformSDL::PlatformSDL() :
 
     window = SDL_CreateWindow("Attack of the PETSCII Robots", 0, 0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 0);
     windowSurface = SDL_GetWindowSurface(window);
-    printf("Going to create bufferSurface...\n");
     bufferSurface = SDL_CreateRGBSurface(0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-    printf("Going to create fadeSurface...\n");
     fadeSurface = SDL_CreateRGBSurface(0, 1, 1, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 #ifdef PLATFORM_COLOR_SUPPORT
-    fontSurface = IMG_Load("c64font.iff");
+    fontSurface = IMG_Load("c64font.png");
 #else
-    fontSurface = IMG_Load("petfont.iff");
+    fontSurface = IMG_Load("petfont.png");
 #endif
 #ifdef PLATFORM_IMAGE_BASED_TILES
-    tileSurface = IMG_Load("tilesalpha.iff");
+    tileSurface = IMG_Load("tilesalpha.png");
 #else
-    printf("Going to create tileSurfaces...\n");
     for (int i = 0; i < 256; i++) {
         tileSurfaces[i] = SDL_CreateRGBSurface(0, 24, 24, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
     }
@@ -250,23 +247,21 @@ PlatformSDL::PlatformSDL() :
     for (int i = 0; i < 3; i++) {
         imageSurfaces[i] = IMG_Load(imageFilenames[i]);
     }
-    itemsSurface = IMG_Load("items.iff");
-    keysSurface = IMG_Load("keys.iff");
-    healthSurface = IMG_Load("health.iff");
-    facesSurface = IMG_Load("faces.iff");
-    animTilesSurface = IMG_Load("animtiles.iff");
+    itemsSurface = IMG_Load("items.png");
+    keysSurface = IMG_Load("keys.png");
+    healthSurface = IMG_Load("health.png");
+    facesSurface = IMG_Load("faces.png");
+    animTilesSurface = IMG_Load("animtiles.png");
 #ifdef PLATFORM_SPRITE_SUPPORT
-    spritesSurface = IMG_Load("spritesalpha.iff");
+    spritesSurface = IMG_Load("spritesalpha.png");
     SDL_SetColorKey(spritesSurface, SDL_TRUE, 16);
 #endif
 #endif
 #ifdef PLATFORM_CURSOR_SUPPORT
-    printf("Going to create cursorSurface...\n");
     cursorSurface = SDL_CreateRGBSurface(0, 28, 28, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 #endif
     SDL_SetSurfaceBlendMode(fontSurface, SDL_BLENDMODE_NONE);
 #ifdef PLATFORM_MODULE_BASED_AUDIO
-    printf("Going to load samples......\n");
     int sample = 0;
     int8_t* destination = sampleData;
     soundExplosion = destination;
@@ -321,8 +316,6 @@ PlatformSDL::PlatformSDL() :
 #endif
 
     platform = this;
-    printf("Done most of the setup!\n");
-    //while(1) ;
 }
 
 PlatformSDL::~PlatformSDL()
@@ -660,16 +653,12 @@ void PlatformSDL::displayImage(Image image)
         SDL_BlitSurface(imageSurfaces[image], &rect, bufferSurface, &rect);
     }
 
-if(!imageSurfaces[image]) { printf("NICKL1!\n"); exit(0); }
-if(!imageSurfaces[image]->format) { printf("NICKL2!\n"); exit(0); }
-
     if (imageSurfaces[image]->format->palette == NULL) {
         SDL_Color colors[256];
         for (int i = 0; i < 256; i++)
             colors[i].r = colors[i].g = colors[i].b = (Uint8)i;
 
-        imageSurfaces[image]->format->palette = NULL;
-        //new SDL_Palette{ 256, colors };
+        imageSurfaces[image]->format->palette = new SDL_Palette{ 256, colors };
     }
 
     palette = imageSurfaces[image]->format->palette;
@@ -1140,7 +1129,7 @@ void PlatformSDL::writeToScreenMemory(address_t address, uint8_t value, uint8_t 
     destinationRect.y = ((address / SCREEN_WIDTH_IN_CHARACTERS) << 3) + yOffset;
     destinationRect.w = 8;
     destinationRect.h = 8;
-    if(palette) SDL_SetSurfaceColorMod(fontSurface, palette->colors[color].r, palette->colors[color].g, palette->colors[color].b);
+    SDL_SetSurfaceColorMod(fontSurface, palette->colors[color].r, palette->colors[color].g, palette->colors[color].b);
     SDL_BlitSurface(fontSurface, &sourceRect, bufferSurface, &destinationRect);
 }
 
