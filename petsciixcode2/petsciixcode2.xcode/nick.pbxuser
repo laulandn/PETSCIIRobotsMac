@@ -1,0 +1,765 @@
+// !$*UTF8*$!
+{
+	018752272B2FF4390050513D = {
+		activeArgIndex = 2147483647;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		configStateDict = {
+		};
+		cppStopOnCatchEnabled = 0;
+		cppStopOnThrowEnabled = 0;
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		isa = PBXExecutable;
+		libgmallocEnabled = 0;
+		name = petsciixcode2;
+		savedGlobals = {
+		};
+		shlibInfoDictList_v2 = (
+			{
+				level = 0;
+				path = /usr/lib/system/libmathCommon.A.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libSystem.B.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libicucore.A.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libauto.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libobjc.A.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libz.1.2.3.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libgcc_s.1.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Security.framework/Versions/A/Security;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libbsm.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/CarbonCore;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/OSServices.framework/Versions/A/OSServices;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CFNetwork.framework/Versions/A/CFNetwork;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/WebServicesCore.framework/Versions/A/WebServicesCore;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SearchKit.framework/Versions/A/SearchKit;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Metadata;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/CoreAudio.framework/Versions/A/CoreAudio;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/CarbonSound.framework/Versions/A/CarbonSound;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/AE.framework/Versions/A/AE;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/ATS;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libcrypto.0.9.7.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/LaunchServices;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ColorSync.framework/Versions/A/ColorSync;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreText.framework/Versions/A/CoreText;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/QD.framework/Versions/A/QD;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libcups.2.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/PrintCore.framework/Versions/A/PrintCore;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/HIServices;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/LangAnalysis.framework/Versions/A/LangAnalysis;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/FindByContent.framework/Versions/A/FindByContent;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/SpeechSynthesis.framework/Versions/A/SpeechSynthesis;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/Resources/libJPEG.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/Resources/libJP2.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/Resources/libGIF.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vImage.framework/Versions/A/vImage;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvMisc.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvDSP.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLAPACK.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/vecLib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/Resources/libRaw.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/Resources/libPng.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/Resources/libRadiance.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libiconv.2.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libxml2.2.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/Resources/libTIFF.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/ImageIO;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/PrivateFrameworks/DesktopServicesPriv.framework/Versions/A/DesktopServicesPriv;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/HIToolbox;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/ImageCapture.framework/Versions/A/ImageCapture;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/SpeechRecognition.framework/Versions/A/SpeechRecognition;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/SecurityHI.framework/Versions/A/SecurityHI;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/Ink.framework/Versions/A/Ink;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/Help.framework/Versions/A/Help;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/OpenScripting.framework/Versions/A/OpenScripting;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/Print.framework/Versions/A/Print;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HTMLRendering.framework/Versions/A/HTMLRendering;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/NavigationServices.framework/Versions/A/NavigationServices;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/CommonPanels.framework/Versions/A/CommonPanels;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/Carbon.framework/Versions/A/Carbon;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/PrivateFrameworks/ZeroLink.framework/Versions/A/ZeroLink;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/usr/lib/libstdc++.6.0.4.dylib";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/libmx.A.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.app/Contents/MacOS/petsciixcode2";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/PT2.3A_replay_cia.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/Platform.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/petrobots.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/PlatformSDL.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/mysdl.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/nlib6img.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/nlib5drw.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/nlib1ini.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/nlibdbug.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/Versions/A/Resources/libCGATS.A.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/Versions/A/Resources/libRIP.A.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/Versions/A/Resources/libCSync.A.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/nlib3etx.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/nlib4mic.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/nlib7dmp.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = "/Users/nick/PETSCIIRobots-SDL-main/petsciixcode2/build/petsciixcode2.build/petsciixcode2.build/Objects-normal/ppc/nlib2dec.ob";
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /Developer/Applications/Xcode.app/Contents/PlugIns/GDBMIDebugging.xcplugin/Contents/Resources/PBGDBIntrospectionSupport.A.dylib;
+				whenToLoad = 0;
+			},
+			{
+				level = 0;
+				path = /usr/lib/dyld;
+				whenToLoad = 0;
+			},
+		);
+		sourceDirectories = (
+		);
+	};
+	018752362B2FF43F0050513D = {
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		isa = PBXSourceControlManager;
+		scmConfiguration = {
+		};
+		scmType = "";
+	};
+	018752372B2FF43F0050513D = {
+		indexTemplatePath = "";
+		isa = PBXCodeSenseManager;
+	};
+	01C262F52B2FF49000B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {956, 12250}}";
+			sepNavSelRange = "{12573, 29}";
+			sepNavVisRect = "{{0, 8171}, {893, 500}}";
+		};
+	};
+	01C262F62B2FF49000B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1040, 23814}}";
+			sepNavSelRange = "{162, 18}";
+			sepNavVisRect = "{{0, 0}, {709, 513}}";
+		};
+	};
+	01C2630D2B2FF4BD00B4FF8D = {
+		fRef = 32DBCF6D0370B57F00C91783;
+		isa = PBXTextBookmark;
+		name = "petsciixcode2_Prefix.pch: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 134;
+		vrLoc = 0;
+	};
+	01C2630F2B2FF4BD00B4FF8D = {
+		fRef = 32DBCF6D0370B57F00C91783;
+		isa = PBXTextBookmark;
+		name = "petsciixcode2_Prefix.pch: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 134;
+		vrLoc = 0;
+	};
+	01C263112B2FF4CB00B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {820, 8904}}";
+			sepNavSelRange = "{17086, 0}";
+			sepNavVisRect = "{{0, 7252}, {820, 406}}";
+		};
+	};
+	01C263422B2FF4D300B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {893, 3668}}";
+			sepNavSelRange = "{3050, 0}";
+			sepNavVisRect = "{{0, 1311}, {893, 500}}";
+		};
+	};
+	01C263652B2FF4EF00B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {893, 1260}}";
+			sepNavSelRange = "{621, 0}";
+			sepNavVisRect = "{{0, 0}, {893, 500}}";
+		};
+	};
+	01C263662B2FF4EF00B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {893, 500}}";
+			sepNavSelRange = "{278, 0}";
+			sepNavVisRect = "{{0, 0}, {893, 500}}";
+		};
+	};
+	01C263682B2FF4EF00B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {850, 7560}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRect = "{{0, 0}, {850, 852}}";
+			sepNavWindowFrame = "{{61, 0}, {895, 981}}";
+		};
+	};
+	01C2636A2B2FF4EF00B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {998, 2478}}";
+			sepNavSelRange = "{585, 0}";
+			sepNavVisRect = "{{0, 0}, {893, 500}}";
+			sepNavWindowFrame = "{{15, 42}, {895, 981}}";
+		};
+	};
+	01C2636B2B2FF4EF00B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1388, 18116}}";
+			sepNavSelRange = "{11952, 0}";
+			sepNavVisRect = "{{0, 4527}, {709, 513}}";
+			sepNavWindowFrame = "{{38, 21}, {895, 981}}";
+		};
+	};
+	01C2636C2B2FF4EF00B4FF8D = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {950, 2590}}";
+			sepNavSelRange = "{305, 0}";
+			sepNavVisRect = "{{0, 0}, {850, 852}}";
+			sepNavWindowFrame = "{{38, 21}, {895, 981}}";
+		};
+	};
+	01C263AF2B2FF6B000B4FF8D = {
+		fRef = 01C262F52B2FF49000B4FF8D;
+		isa = PBXTextBookmark;
+		name = "nlib.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 657;
+		vrLoc = 0;
+	};
+	01C263B02B2FF6B000B4FF8D = {
+		fRef = 01C263112B2FF4CB00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "mysdl.cpp: MYSDL2";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 662;
+		vrLoc = 0;
+	};
+	01C263B12B2FF6B000B4FF8D = {
+		fRef = 01C263652B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "Palette.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 782;
+		vrLoc = 0;
+	};
+	01C263B32B2FF6B000B4FF8D = {
+		fRef = 01C262F52B2FF49000B4FF8D;
+		isa = PBXTextBookmark;
+		name = "nlib.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 657;
+		vrLoc = 0;
+	};
+	01C263B42B2FF6B000B4FF8D = {
+		fRef = 01C263112B2FF4CB00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "mysdl.cpp: MYSDL2";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 662;
+		vrLoc = 0;
+	};
+	01C263B52B2FF6B000B4FF8D = {
+		fRef = 01C263652B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "Palette.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 782;
+		vrLoc = 0;
+	};
+	01C263DC2B2FF7F900B4FF8D = {
+		fRef = 01C262F62B2FF49000B4FF8D;
+		isa = PBXTextBookmark;
+		name = "#include \"nlib.h\"";
+		rLen = 18;
+		rLoc = 162;
+		rType = 0;
+		vrLen = 489;
+		vrLoc = 0;
+	};
+	01C263DD2B2FF7F900B4FF8D = {
+		fRef = 01C2636B2B2FF4EF00B4FF8D;
+		isa = PBXBookmark;
+	};
+	01C263DE2B2FF7F900B4FF8D = {
+		fRef = 01C262F62B2FF49000B4FF8D;
+		isa = PBXTextBookmark;
+		name = "#include \"nlib.h\"";
+		rLen = 18;
+		rLoc = 162;
+		rType = 0;
+		vrLen = 489;
+		vrLoc = 0;
+	};
+	01C263DF2B2FF7F900B4FF8D = {
+		fRef = 01C2636B2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.cpp: 325";
+		rLen = 0;
+		rLoc = 11952;
+		rType = 0;
+		vrLen = 947;
+		vrLoc = 11905;
+	};
+	20286C28FDCF999611CA2CEA = {
+		activeBuildStyle = 4A9504C5FFE6A39111CA0CBA;
+		activeExecutable = 018752272B2FF4390050513D;
+		activeTarget = 8D0C4E890486CD37000505A6;
+		addToTargets = (
+			8D0C4E890486CD37000505A6,
+		);
+		codeSenseManager = 018752372B2FF43F0050513D;
+		executables = (
+			018752272B2FF4390050513D,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXErrorsWarningsDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXErrorsWarningsDataSource_LocationID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					300,
+					200,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXErrorsWarningsDataSource_TypeID,
+					PBXErrorsWarningsDataSource_MessageID,
+					PBXErrorsWarningsDataSource_LocationID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					517,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 724563021;
+			PBXWorkspaceStateSaveDate = 724563021;
+		};
+		perUserProjectItems = {
+			01C2630D2B2FF4BD00B4FF8D = 01C2630D2B2FF4BD00B4FF8D;
+			01C2630F2B2FF4BD00B4FF8D = 01C2630F2B2FF4BD00B4FF8D;
+			01C263AF2B2FF6B000B4FF8D = 01C263AF2B2FF6B000B4FF8D;
+			01C263B02B2FF6B000B4FF8D = 01C263B02B2FF6B000B4FF8D;
+			01C263B12B2FF6B000B4FF8D = 01C263B12B2FF6B000B4FF8D;
+			01C263B32B2FF6B000B4FF8D = 01C263B32B2FF6B000B4FF8D;
+			01C263B42B2FF6B000B4FF8D = 01C263B42B2FF6B000B4FF8D;
+			01C263B52B2FF6B000B4FF8D = 01C263B52B2FF6B000B4FF8D;
+			01C263DC2B2FF7F900B4FF8D = 01C263DC2B2FF7F900B4FF8D;
+			01C263DD2B2FF7F900B4FF8D = 01C263DD2B2FF7F900B4FF8D;
+			01C263DE2B2FF7F900B4FF8D = 01C263DE2B2FF7F900B4FF8D;
+			01C263DF2B2FF7F900B4FF8D = 01C263DF2B2FF7F900B4FF8D;
+		};
+		sourceControlManager = 018752362B2FF43F0050513D;
+		userBuildSettings = {
+		};
+	};
+	32DBCF6D0370B57F00C91783 = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {614, 84}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRect = "{{0, 0}, {435, 73}}";
+			sepNavWindowFrame = "{{15, 42}, {895, 981}}";
+		};
+	};
+	8D0C4E890486CD37000505A6 = {
+		activeExec = 0;
+		executables = (
+			018752272B2FF4390050513D,
+		);
+	};
+}
