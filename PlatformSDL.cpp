@@ -87,6 +87,8 @@ static const char* sampleFilenames[] = {
 #endif
 
 static uint8_t standardControls[] = {
+#ifdef _MAC
+#else
     SDL_SCANCODE_I, // MOVE UP orig: 56 (8)
     SDL_SCANCODE_K, // MOVE DOWN orig: 50 (2)
     SDL_SCANCODE_J, // MOVE LEFT orig: 52 (4)
@@ -113,6 +115,7 @@ static uint8_t standardControls[] = {
     SDL_SCANCODE_RETURN, // RETURN
     SDL_SCANCODE_Y, // YES
     SDL_SCANCODE_N // NO
+#endif
 };
 
 #define LIVE_MAP_ORIGIN_X ((PLATFORM_SCREEN_WIDTH - 56 - 128 * 3) / 2)
@@ -142,11 +145,124 @@ static uint16_t joystickButtons[] = {
     0 // 16
 };
 
+
+////////
+
+
+#ifdef _MAC
+SDL_Surface *SDL_CreateRGBSurface(uint32_t flags,uint32_t w,uint32_t h,uint32_t d,uint32_t rm,uint32_t gm,uint32_t bm,uint32_t am)
+{
+  printf("SDL_CreateRGBSurface...\n");
+  GWorldPtr *gw=(GWorldPtr *)malloc(sizeof(GWorldPtr));
+  Rect r;
+  NewGWorld(gw,32,&r,NULL,NULL,0);
+  return gw;
+}
+#endif
+
+
+#ifdef _MAC
+void SDL_FreeSurface(SDL_Surface *s)
+{
+  printf("SDL_FreeSurface...\n");
+  if(!s) { printf("s was NULL!\n"); }
+  DisposeGWorld(*s);
+}
+#endif
+
+
+#ifdef _MAC
+SDL_Surface *IMG_Load(const char *n)
+{
+  printf("IMG_Load...\n");
+  if(!n) { printf("n was NULL!\n"); }
+  return NULL;
+}
+#endif
+
+
+#ifdef _MAC
+void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
+{
+  printf("SDL_BlitSurface...\n");
+  if(!s) { printf("s was NULL!\n"); }
+  if(!sr) { printf("sr was NULL!\n"); }
+  if(!d) { printf("d was NULL!\n"); }
+  if(!dr) { printf("dr was NULL!\n"); }
+  Rect msr;  msr.top=sr->y; msr.left=sr->x; 
+  msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
+  Rect mdr;  mdr.top=dr->y; mdr.left=dr->x; 
+  mdr.bottom=dr->y+dr->h;  mdr.right=dr->x+dr->w;
+  CopyBits((BitMap *)&((GrafPtr)s)->portBits,(BitMap *)&((GrafPtr)d)->portBits,&msr,&mdr,srcCopy,NULL);
+}
+#endif
+
+
+#ifdef _MAC
+void SDL_BlitScaled(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
+{
+  printf("SDL_BlitScaled...\n");
+  if(!s) { printf("s was NULL!\n"); }
+  if(!sr) { printf("sr was NULL!\n"); }
+  if(!d) { printf("d was NULL!\n"); }
+  if(!dr) { printf("dr was NULL!\n"); }
+}
+#endif
+
+
+#ifdef _MAC
+void SDL_SetClipRect(SDL_Surface *s,SDL_Rect *sr)
+{
+  printf("SDL_SetClipRect...\n");
+  if(!s) { printf("s was NULL!\n"); }
+  if(!sr) { printf("sr was NULL!\n"); }
+}
+#endif
+
+
+#ifdef _MAC
+void  SDL_FillRect(SDL_Surface *s,SDL_Rect *sr,uint32_t v)
+{
+  printf("SDL_FillRect...\n");
+  if(!s) { printf("s was NULL!\n"); }
+  if(!sr) { printf("sr was NULL!\n"); }
+}
+#endif
+
+
+#ifdef _MAC
+void  SDL_FillRects(SDL_Surface *s,SDL_Rect *rs,uint32_t n,uint32_t v)
+{
+  printf("SDL_FillRects...\n");
+  if(!s) { printf("s was NULL!\n"); }
+  if(!rs) { printf("rs was NULL!\n"); }
+}
+#endif
+
+
+#ifdef _MAC
+void  SDL_UpdateWindowSurface(SDL_Window *w)
+{
+  printf("SDL_UpdateWindowSurface...\n");
+  if(!w) { printf("w was NULL!\n"); }
+}
+#endif
+
+
+////////
+
+
 PlatformSDL::PlatformSDL() :
     interrupt(0),
+#ifdef _MAC
+#else
     audioSpec({0}),
     audioDeviceID(0),
+#endif
+#ifdef _MAC
+#else
     joystick(0),
+#endif
     window(0),
     windowSurface(0),
     bufferSurface(0),
@@ -199,6 +315,8 @@ PlatformSDL::PlatformSDL() :
     downKey(0xff),
     shift(0)
 {
+#ifdef _MAC
+#else
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
     }
@@ -207,7 +325,10 @@ PlatformSDL::PlatformSDL() :
     }
 
     SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
+#endif
 
+#ifdef _MAC
+#else
     SDL_AudioSpec requestedAudioSpec;
     SDL_zero(requestedAudioSpec);
     requestedAudioSpec.freq = 44100;
@@ -224,20 +345,32 @@ PlatformSDL::PlatformSDL() :
     interruptIntervalInSamples = audioSpec.freq / framesPerSecond_;
     samplesSinceInterrupt = interruptIntervalInSamples;
     SDL_PauseAudioDevice(audioDeviceID, 0);
+#endif
 
+#ifdef _MAC
+#else
     joystick = SDL_JoystickOpen(0);
+#endif
 
+#ifdef _MAC
+#else
     window = SDL_CreateWindow("Attack of the PETSCII Robots", 0, 0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 0);
     windowSurface = SDL_GetWindowSurface(window);
+#endif
+
     bufferSurface = SDL_CreateRGBSurface(0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+    if(!bufferSurface) { printf("Didn't get bufferSurface!\n"); exit(5); }
     fadeSurface = SDL_CreateRGBSurface(0, 1, 1, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+    if(!fadeSurface) { printf("Didn't get fadeSurface!\n"); exit(5); }
 #ifdef PLATFORM_COLOR_SUPPORT
     fontSurface = IMG_Load("c64font.png");
 #else
     fontSurface = IMG_Load("petfont.png");
 #endif
+    if(!fontSurface) { printf("Didn't get fontSurface!\n"); exit(5); }
 #ifdef PLATFORM_IMAGE_BASED_TILES
     tileSurface = IMG_Load("tilesalpha.png");
+    if(!tileSurface) { printf("Didn't get tileSurface!\n"); exit(5); }
 #else
     for (int i = 0; i < 256; i++) {
         tileSurfaces[i] = SDL_CreateRGBSurface(0, 24, 24, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
@@ -248,19 +381,32 @@ PlatformSDL::PlatformSDL() :
         imageSurfaces[i] = IMG_Load(imageFilenames[i]);
     }
     itemsSurface = IMG_Load("items.png");
+    if(!itemsSurface) { printf("Didn't get itemsSurface!\n"); exit(5); }
     keysSurface = IMG_Load("keys.png");
+    if(!keysSurface) { printf("Didn't get keysSurface!\n"); exit(5); }
     healthSurface = IMG_Load("health.png");
+    if(!healthSurface) { printf("Didn't get healthSurface!\n"); exit(5); }
     facesSurface = IMG_Load("faces.png");
+    if(!facesSurface) { printf("Didn't get facesSurface!\n"); exit(5); }
     animTilesSurface = IMG_Load("animtiles.png");
+    if(!animTilesSurface) { printf("Didn't get animTilesSurface!\n"); exit(5); }
 #ifdef PLATFORM_SPRITE_SUPPORT
     spritesSurface = IMG_Load("spritesalpha.png");
+    if(!spritesSurface) { printf("Didn't get spritesSurface!\n"); exit(5); }
+#ifdef _MAC
+#else
     SDL_SetColorKey(spritesSurface, SDL_TRUE, 16);
+#endif
 #endif
 #endif
 #ifdef PLATFORM_CURSOR_SUPPORT
     cursorSurface = SDL_CreateRGBSurface(0, 28, 28, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+    if(!cursorSurface) { printf("Didn't get cursorSurface!\n"); exit(5); }
 #endif
+#ifdef _MAC
+#else
     SDL_SetSurfaceBlendMode(fontSurface, SDL_BLENDMODE_NONE);
+#endif
 #ifdef PLATFORM_MODULE_BASED_AUDIO
     int sample = 0;
     int8_t* destination = sampleData;
@@ -343,10 +489,13 @@ PlatformSDL::~PlatformSDL()
     SDL_FreeSurface(fadeSurface);
     SDL_FreeSurface(bufferSurface);
     SDL_FreeSurface(fontSurface);
+#ifdef _MAC
+#else
     SDL_DestroyWindow(window);
     SDL_JoystickClose(joystick);
     SDL_CloseAudioDevice(audioDeviceID);
     SDL_Quit();
+#endif
 #ifdef PLATFORM_MODULE_BASED_AUDIO
     delete[] sampleData;
     delete[] moduleData;
@@ -354,6 +503,8 @@ PlatformSDL::~PlatformSDL()
 }
 
 void PlatformSDL::audioCallback(void* data, uint8_t* stream, int bytes) {
+#ifdef _MAC
+#else
     PlatformSDL* platform = (PlatformSDL*)data;
     int words = bytes >> 1;
     int16_t* output = (int16_t*)stream;
@@ -372,6 +523,7 @@ void PlatformSDL::audioCallback(void* data, uint8_t* stream, int bytes) {
         }
         platform->samplesSinceInterrupt -= platform->interruptIntervalInSamples;
     }
+#endif
 }
 
 
@@ -459,6 +611,9 @@ void PlatformSDL::chrout(uint8_t character)
 
 uint8_t PlatformSDL::readKeyboard()
 {
+#ifdef _MAC
+  return 0;
+#else
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -509,6 +664,7 @@ uint8_t PlatformSDL::readKeyboard()
     uint8_t result = keyToReturn;
     keyToReturn = 0xff;
     return result;
+#endif
 }
 
 void PlatformSDL::keyRepeat()
@@ -519,8 +675,11 @@ void PlatformSDL::keyRepeat()
 
 void PlatformSDL::clearKeyBuffer()
 {
+#ifdef _MAC
+#else
     SDL_Event event;
     while (SDL_PollEvent(&event));
+#endif
     keyToReturn = 0xff;
     downKey = 0xff;
     pendingState = 0;
@@ -534,6 +693,9 @@ bool PlatformSDL::isKeyOrJoystickPressed(bool gamepad)
 
 uint16_t PlatformSDL::readJoystick(bool gamepad)
 {
+#ifdef _MAC
+    return 0;
+#else
     uint16_t state = 0;
     int16_t leftStickX = SDL_JoystickGetAxis(joystick, 0);
     int16_t leftStickY = SDL_JoystickGetAxis(joystick, 1);
@@ -578,6 +740,7 @@ uint16_t PlatformSDL::readJoystick(bool gamepad)
     uint16_t result = joystickStateToReturn;
     joystickStateToReturn = 0;
     return result;
+#endif
 }
 
 uint32_t PlatformSDL::load(const char* filename, uint8_t* destination, uint32_t size)
@@ -653,6 +816,8 @@ void PlatformSDL::displayImage(Image image)
         SDL_BlitSurface(imageSurfaces[image], &rect, bufferSurface, &rect);
     }
 
+#ifdef _MAC
+#else
     if (imageSurfaces[image]->format->palette == NULL) {
         SDL_Color colors[256];
         for (int i = 0; i < 256; i++)
@@ -662,6 +827,8 @@ void PlatformSDL::displayImage(Image image)
     }
 
     palette = imageSurfaces[image]->format->palette;
+#endif
+
     loadedImage = image;
 }
 #endif
@@ -996,8 +1163,10 @@ void PlatformSDL::renderLiveMapUnits(uint8_t* map, uint8_t* unitTypes, uint8_t* 
                 int y = unitY[i];
                 SDL_Rect clearRect = { LIVE_MAP_ORIGIN_X + x * 3, LIVE_MAP_ORIGIN_Y + y * 3, 3, 3 };
                 SDL_Color* color = &palette->colors[(i > 0 || playerColor == 1) ? 1 : 0];
+#ifdef _MAC
+#else
                 SDL_FillRect(bufferSurface, &clearRect, SDL_MapRGB(bufferSurface->format, color->r, color->g, color->b));
-
+#endif
                 ::unitTypes[i] = i == 0 ? playerColor : unitTypes[i];
                 ::unitX[i] = unitX[i];
                 ::unitY[i] = unitY[i];
@@ -1114,7 +1283,10 @@ void PlatformSDL::writeToScreenMemory(address_t address, uint8_t value)
     destinationRect.y = (address / SCREEN_WIDTH_IN_CHARACTERS) << 3;
     destinationRect.w = 8;
     destinationRect.h = 8;
+#ifdef _MAC
+#else
     SDL_SetSurfaceColorMod(fontSurface, 0x77, 0xbb, 0x55);
+#endif
     SDL_BlitSurface(fontSurface, &sourceRect, bufferSurface, &destinationRect);
 }
 
@@ -1129,7 +1301,10 @@ void PlatformSDL::writeToScreenMemory(address_t address, uint8_t value, uint8_t 
     destinationRect.y = ((address / SCREEN_WIDTH_IN_CHARACTERS) << 3) + yOffset;
     destinationRect.w = 8;
     destinationRect.h = 8;
+#ifdef _MAC
+#else
     SDL_SetSurfaceColorMod(fontSurface, palette->colors[color].r, palette->colors[color].g, palette->colors[color].b);
+#endif
     SDL_BlitSurface(fontSurface, &sourceRect, bufferSurface, &destinationRect);
 }
 
@@ -1280,3 +1455,4 @@ void PlatformSDL::renderFrame(bool)
     }
     SDL_UpdateWindowSurface(window);
 }
+

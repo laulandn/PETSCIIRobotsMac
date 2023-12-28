@@ -111,6 +111,11 @@ uint8_t SCREEN_MEMORY[SCREEN_WIDTH_IN_CHARACTERS * SCREEN_HEIGHT_IN_CHARACTERS];
 
 int main(int argc, char *argv[])
 {
+#ifdef _MAC
+    printf("Mac version!\n");
+#else
+    printf("SDL version!\n");
+#endif
     PlatformClass platformInstance;
 
     if (!platform) {

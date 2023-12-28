@@ -3,9 +3,25 @@
 
 #define PlatformClass PlatformSDL
 
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef _MAC
+#include <Quickdraw.h>
+#include <QDOffscreen.h>
+#include <MacWindows.h>
+#define SDL_Surface GWorldPtr
+#define SDL_Window WindowRef
+struct SDL_Rect { int x,y,w,h; };
+struct SDL_Color { int r,g,b,i; };
+struct SDL_Palette { SDL_Color *colors; };
+#else
 #include <SDL.h>
 #include <SDL_image.h>
+#endif
+
 #include "Platform.h"
+
 
 class PlatformSDL : public Platform {
 public:
@@ -87,9 +103,15 @@ private:
 #endif
     static void audioCallback(void* data, uint8_t* stream, int bytes);
     void (*interrupt)(void);
+#ifdef _MAC
+#else
     SDL_AudioSpec audioSpec;
     SDL_AudioDeviceID audioDeviceID;
+#endif
+#ifdef _MAC
+#else
     SDL_Joystick* joystick;
+#endif
     SDL_Window* window;
     SDL_Surface* windowSurface;
     SDL_Surface* bufferSurface;
