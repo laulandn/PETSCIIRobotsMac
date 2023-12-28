@@ -1,15 +1,41 @@
 #ifndef _PLATFORMSDL_H
 #define _PLATFORMSDL_H
 
+
+#define _MAC
+
+
 #define PlatformClass PlatformSDL
+
+#define PLATFORM_NAME "sdl" 
+#define PLATFORM_SCREEN_WIDTH 440 
+#define PLATFORM_SCREEN_HEIGHT 224 
+#define PLATFORM_MAP_WINDOW_TILES_WIDTH 16 
+#define PLATFORM_MAP_WINDOW_TILES_HEIGHT 8 
+#define PLATFORM_INTRO_OPTIONS 3 
+#define PLATFORM_DEFAULT_CONTROL 3 
+#define PLATFORM_MODULE_BASED_AUDIO 
+#define PLATFORM_TILE_BASED_RENDERING 
+#define PLATFORM_IMAGE_BASED_TILES 
+#define PLATFORM_IMAGE_SUPPORT 
+#define PLATFORM_SPRITE_SUPPORT 
+#define PLATFORM_COLOR_SUPPORT 
+#define PLATFORM_CURSOR_SUPPORT 
+#define PLATFORM_CURSOR_SHAPE_SUPPORT 
+#define PLATFORM_FADE_SUPPORT 
+
 
 #include <stdio.h>
 #include <stdlib.h>
 
 #ifdef _MAC
+#if 0
 #include <Quickdraw.h>
 #include <QDOffscreen.h>
 #include <MacWindows.h>
+#else
+#include <Carbon/Carbon.h>
+#endif
 #define SDL_Surface GWorldPtr
 #define SDL_Window WindowRef
 struct SDL_Rect { int x,y,w,h; };

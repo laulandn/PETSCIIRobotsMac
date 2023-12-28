@@ -193,7 +193,16 @@ void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
   msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
   Rect mdr;  mdr.top=dr->y; mdr.left=dr->x; 
   mdr.bottom=dr->y+dr->h;  mdr.right=dr->x+dr->w;
-  CopyBits((BitMap *)&((GrafPtr)s)->portBits,(BitMap *)&((GrafPtr)d)->portBits,&msr,&mdr,srcCopy,NULL);
+  const BitMap *srcBits=NULL;  
+  const BitMap *dstBits=NULL;
+#if TARGET_API_CARBON
+  srcBits=GetPortBitMapForCopyBits(*s);
+  dstBits=GetPortBitMapForCopyBits(*d);
+#else
+  srcBits=(BitMap *)&((GrafPtr)s)->portBits;
+  dstBits=(BitMap *)&((GrafPtr)d)->portBits
+#endif
+  CopyBits(srcBits,dstBits,&msr,&mdr,srcCopy,NULL);
 }
 #endif
 
@@ -285,7 +294,7 @@ PlatformSDL::PlatformSDL() :
 #endif
 #ifdef PLATFORM_CURSOR_SUPPORT
     cursorSurface(0),
-    cursorRect({0}),
+    //cursorRect({0}),
 #ifdef PLATFORM_CURSOR_SHAPE_SUPPORT
     cursorShape(ShapeUse),
 #endif
