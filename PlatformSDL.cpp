@@ -148,14 +148,15 @@ static uint16_t joystickButtons[] = {
 
 ////////
 
-
 #ifdef _MAC
 SDL_Surface *SDL_CreateRGBSurface(uint32_t flags,uint32_t w,uint32_t h,uint32_t d,uint32_t rm,uint32_t gm,uint32_t bm,uint32_t am)
 {
   printf("SDL_CreateRGBSurface...\n");
   GWorldPtr *gw=(GWorldPtr *)malloc(sizeof(GWorldPtr));
-  Rect r;
-  NewGWorld(gw,32,&r,NULL,NULL,0);
+  if(!gw) { printf("gw was NULL!\n"); return; }
+  Rect r;  r.left=0; r.top=0;
+  r.bottom=h; r.right=w;
+  NewGWorld(gw,d,&r,NULL,NULL,0);
   return gw;
 }
 #endif
@@ -165,7 +166,7 @@ SDL_Surface *SDL_CreateRGBSurface(uint32_t flags,uint32_t w,uint32_t h,uint32_t 
 void SDL_FreeSurface(SDL_Surface *s)
 {
   printf("SDL_FreeSurface...\n");
-  if(!s) { printf("s was NULL!\n"); }
+  if(!s) { printf("s was NULL!\n"); return; }
   DisposeGWorld(*s);
 }
 #endif
@@ -175,7 +176,7 @@ void SDL_FreeSurface(SDL_Surface *s)
 SDL_Surface *IMG_Load(const char *n)
 {
   printf("IMG_Load...\n");
-  if(!n) { printf("n was NULL!\n"); }
+  if(!n) { printf("n was NULL!\n"); return; }
   return NULL;
 }
 #endif
@@ -185,10 +186,10 @@ SDL_Surface *IMG_Load(const char *n)
 void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
 {
   printf("SDL_BlitSurface...\n");
-  if(!s) { printf("s was NULL!\n"); }
-  if(!sr) { printf("sr was NULL!\n"); }
-  if(!d) { printf("d was NULL!\n"); }
-  if(!dr) { printf("dr was NULL!\n"); }
+  if(!s) { printf("s was NULL!\n"); return; }
+  if(!sr) { printf("sr was NULL!\n"); return; }
+  if(!d) { printf("d was NULL!\n"); return; }
+  if(!dr) { printf("dr was NULL!\n"); return; }
   Rect msr;  msr.top=sr->y; msr.left=sr->x; 
   msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
   Rect mdr;  mdr.top=dr->y; mdr.left=dr->x; 
@@ -210,11 +211,8 @@ void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
 #ifdef _MAC
 void SDL_BlitScaled(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
 {
-  printf("SDL_BlitScaled...\n");
-  if(!s) { printf("s was NULL!\n"); }
-  if(!sr) { printf("sr was NULL!\n"); }
-  if(!d) { printf("d was NULL!\n"); }
-  if(!dr) { printf("dr was NULL!\n"); }
+  //printf("SDL_BlitScaled...\n");
+  SDL_BlitSurface(s,sr,d,dr);
 }
 #endif
 
@@ -223,8 +221,9 @@ void SDL_BlitScaled(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
 void SDL_SetClipRect(SDL_Surface *s,SDL_Rect *sr)
 {
   printf("SDL_SetClipRect...\n");
-  if(!s) { printf("s was NULL!\n"); }
-  if(!sr) { printf("sr was NULL!\n"); }
+  if(!s) { printf("s was NULL!\n"); return; }
+  if(!sr) { printf("sr was NULL!\n"); return; }
+  // TODO
 }
 #endif
 
@@ -233,8 +232,9 @@ void SDL_SetClipRect(SDL_Surface *s,SDL_Rect *sr)
 void  SDL_FillRect(SDL_Surface *s,SDL_Rect *sr,uint32_t v)
 {
   printf("SDL_FillRect...\n");
-  if(!s) { printf("s was NULL!\n"); }
-  if(!sr) { printf("sr was NULL!\n"); }
+  if(!s) { printf("s was NULL!\n"); return; }
+  if(!sr) { printf("sr was NULL!\n"); return; }
+  // TODO
 }
 #endif
 
@@ -243,8 +243,9 @@ void  SDL_FillRect(SDL_Surface *s,SDL_Rect *sr,uint32_t v)
 void  SDL_FillRects(SDL_Surface *s,SDL_Rect *rs,uint32_t n,uint32_t v)
 {
   printf("SDL_FillRects...\n");
-  if(!s) { printf("s was NULL!\n"); }
-  if(!rs) { printf("rs was NULL!\n"); }
+  if(!s) { printf("s was NULL!\n"); return; }
+  if(!rs) { printf("rs was NULL!\n"); return; }
+  // TODO
 }
 #endif
 
@@ -253,7 +254,8 @@ void  SDL_FillRects(SDL_Surface *s,SDL_Rect *rs,uint32_t n,uint32_t v)
 void  SDL_UpdateWindowSurface(SDL_Window *w)
 {
   printf("SDL_UpdateWindowSurface...\n");
-  if(!w) { printf("w was NULL!\n"); }
+  if(!w) { printf("w was NULL!\n"); return; }
+  // TODO
 }
 #endif
 

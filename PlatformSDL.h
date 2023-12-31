@@ -28,13 +28,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 #ifdef _MAC
-#if 0
+#if TARGET_API_CARBON
+#include <Carbon/Carbon.h>
+#else
 #include <Quickdraw.h>
 #include <QDOffscreen.h>
 #include <MacWindows.h>
-#else
-#include <Carbon/Carbon.h>
 #endif
 #define SDL_Surface GWorldPtr
 #define SDL_Window WindowRef
@@ -45,6 +46,7 @@ struct SDL_Palette { SDL_Color *colors; };
 #include <SDL.h>
 #include <SDL_image.h>
 #endif
+
 
 #include "Platform.h"
 
