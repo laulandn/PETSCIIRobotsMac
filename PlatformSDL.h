@@ -8,12 +8,14 @@
 #define PlatformClass PlatformSDL
 
 #define PLATFORM_NAME "sdl" 
-#define PLATFORM_SCREEN_WIDTH 440 
-#define PLATFORM_SCREEN_HEIGHT 224 
+//#define PLATFORM_SCREEN_WIDTH 440 
+#define PLATFORM_SCREEN_WIDTH 320
+//#define PLATFORM_SCREEN_HEIGHT 224 
+#define PLATFORM_SCREEN_HEIGHT 200
 #define PLATFORM_MAP_WINDOW_TILES_WIDTH 16 
 #define PLATFORM_MAP_WINDOW_TILES_HEIGHT 8 
-#define PLATFORM_INTRO_OPTIONS 3 
-#define PLATFORM_DEFAULT_CONTROL 3 
+//#define PLATFORM_INTRO_OPTIONS 3
+//#define PLATFORM_DEFAULT_CONTROL 3 
 #define PLATFORM_MODULE_BASED_AUDIO 
 #define PLATFORM_TILE_BASED_RENDERING 
 #define PLATFORM_IMAGE_BASED_TILES 
@@ -38,7 +40,7 @@
 #include <MacWindows.h>
 #endif
 #define SDL_Surface GWorldPtr
-#define SDL_Window WindowRef
+#define SDL_Window WindowPtr
 struct SDL_Rect { int x,y,w,h; };
 struct SDL_Color { int r,g,b,i; };
 struct SDL_Palette { SDL_Color *colors; };

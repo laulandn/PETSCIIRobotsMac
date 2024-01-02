@@ -50,9 +50,9 @@ static int8_t animTileMap[256] = {
 static char MAPNAME[] = "level-a";
 #ifdef PLATFORM_IMAGE_SUPPORT
 static const char* imageFilenames[] = {
-    "introscreen.png",
-    "gamescreen.png",
-    "gameover.png"
+    "introscreen.raw",
+    "gamescreen.raw",
+    "gameover.raw"
 };
 #endif
 #ifdef PLATFORM_MODULE_BASED_AUDIO
@@ -88,6 +88,7 @@ static const char* sampleFilenames[] = {
 
 static uint8_t standardControls[] = {
 #ifdef _MAC
+  0
 #else
     SDL_SCANCODE_I, // MOVE UP orig: 56 (8)
     SDL_SCANCODE_K, // MOVE DOWN orig: 50 (2)
@@ -148,14 +149,23 @@ static uint16_t joystickButtons[] = {
 
 ////////
 
+
+#ifdef _MAC
+WindowPtr macwp;
+CGrafPtr macp;
+FILE *debugf;
+#endif
+
+
 #ifdef _MAC
 SDL_Surface *SDL_CreateRGBSurface(uint32_t flags,uint32_t w,uint32_t h,uint32_t d,uint32_t rm,uint32_t gm,uint32_t bm,uint32_t am)
 {
-  printf("SDL_CreateRGBSurface...\n");
+  fprintf(debugf,"SDL_CreateRGBSurface...\n");
   GWorldPtr *gw=(GWorldPtr *)malloc(sizeof(GWorldPtr));
-  if(!gw) { printf("gw was NULL!\n"); return; }
+  if(!gw) { fprintf(debugf,"gw was NULL!\n"); return NULL; }
   Rect r;  r.left=0; r.top=0;
   r.bottom=h; r.right=w;
+  fprintf(debugf,"r is %d %d %d %d\n",r.left,r.top,r.right,r.bottom);
   NewGWorld(gw,d,&r,NULL,NULL,0);
   return gw;
 }
@@ -165,8 +175,8 @@ SDL_Surface *SDL_CreateRGBSurface(uint32_t flags,uint32_t w,uint32_t h,uint32_t 
 #ifdef _MAC
 void SDL_FreeSurface(SDL_Surface *s)
 {
-  printf("SDL_FreeSurface...\n");
-  if(!s) { printf("s was NULL!\n"); return; }
+  fprintf(debugf,"SDL_FreeSurface...\n");
+  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
   DisposeGWorld(*s);
 }
 #endif
@@ -175,9 +185,26 @@ void SDL_FreeSurface(SDL_Surface *s)
 #ifdef _MAC
 SDL_Surface *IMG_Load(const char *n)
 {
-  printf("IMG_Load...\n");
-  if(!n) { printf("n was NULL!\n"); return; }
-  return NULL;
+  fprintf(debugf,"IMG_Load...\n");
+  if(!n) { fprintf(debugf,"n was NULL!\n"); return NULL; }
+  FILE *f=fopen(n,"rb");
+  if(!f) { fprintf(debugf,"Couldn't open %s!\n",n); return NULL; }
+  int w,h,d,np;
+  fread(&w,sizeof(int),1,f);
+  fread(&h,sizeof(int),1,f);
+  fread(&d,sizeof(int),1,f);
+  fread(&np,sizeof(int),1,f);
+  fprintf(debugf,"Image %s is %dx%dx%d(%d)\n",n,w,h,d,np);
+  SDL_Surface *s=SDL_CreateRGBSurface(0,w,h,d,0,0,0,0);
+  if(!s) { fprintf(debugf,"s was NULL!\n"); return NULL; }
+  const BitMap *dstBits=NULL;
+#if TARGET_API_CARBON
+  //dstBits=GetPortBitMapForCopyBits(*d);
+#else
+  //dstBits=(BitMap *)&((GrafPtr)d)->portBits;
+#endif
+  // TODO
+  return s;
 }
 #endif
 
@@ -185,15 +212,17 @@ SDL_Surface *IMG_Load(const char *n)
 #ifdef _MAC
 void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
 {
-  printf("SDL_BlitSurface...\n");
-  if(!s) { printf("s was NULL!\n"); return; }
-  if(!sr) { printf("sr was NULL!\n"); return; }
-  if(!d) { printf("d was NULL!\n"); return; }
-  if(!dr) { printf("dr was NULL!\n"); return; }
+  fprintf(debugf,"SDL_BlitSurface...\n");
+  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
+  if(!sr) { fprintf(debugf,"sr was NULL!\n"); return; }
+  if(!d) { fprintf(debugf,"d was NULL!\n"); return; }
+  if(!dr) { fprintf(debugf,"dr was NULL!\n"); return; }
   Rect msr;  msr.top=sr->y; msr.left=sr->x; 
   msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
   Rect mdr;  mdr.top=dr->y; mdr.left=dr->x; 
   mdr.bottom=dr->y+dr->h;  mdr.right=dr->x+dr->w;
+  fprintf(debugf,"msr is %d %d %d %d\n",msr.left,msr.top,msr.right,msr.bottom);
+  fprintf(debugf,"mdr is %d %d %d %d\n",mdr.left,mdr.top,mdr.right,mdr.bottom);
   const BitMap *srcBits=NULL;  
   const BitMap *dstBits=NULL;
 #if TARGET_API_CARBON
@@ -201,8 +230,15 @@ void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
   dstBits=GetPortBitMapForCopyBits(*d);
 #else
   srcBits=(BitMap *)&((GrafPtr)s)->portBits;
-  dstBits=(BitMap *)&((GrafPtr)d)->portBits
+  dstBits=(BitMap *)&((GrafPtr)d)->portBits;
 #endif
+  //
+  Rect t;
+  GetPortBounds((GrafPtr)srcBits,&t);
+  fprintf(debugf,"srcBits t is %d %d %d %d\n",t.left,t.top,t.right,t.bottom);
+  GetPortBounds((GrafPtr)dstBits,&t);
+  fprintf(debugf,"dstBits t is %d %d %d %d\n",t.left,t.top,t.right,t.bottom);
+  //
   CopyBits(srcBits,dstBits,&msr,&mdr,srcCopy,NULL);
 }
 #endif
@@ -211,7 +247,7 @@ void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
 #ifdef _MAC
 void SDL_BlitScaled(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
 {
-  //printf("SDL_BlitScaled...\n");
+  //fprintf(debugf,"SDL_BlitScaled...\n");
   SDL_BlitSurface(s,sr,d,dr);
 }
 #endif
@@ -220,9 +256,12 @@ void SDL_BlitScaled(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
 #ifdef _MAC
 void SDL_SetClipRect(SDL_Surface *s,SDL_Rect *sr)
 {
-  printf("SDL_SetClipRect...\n");
-  if(!s) { printf("s was NULL!\n"); return; }
-  if(!sr) { printf("sr was NULL!\n"); return; }
+  fprintf(debugf,"SDL_SetClipRect...\n");
+  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
+  if(!sr) { fprintf(debugf,"sr was NULL!\n"); return; }
+  Rect msr;  msr.top=sr->y; msr.left=sr->x; 
+  msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
+  fprintf(debugf,"msr is %d %d %d %d\n",msr.left,msr.top,msr.right,msr.bottom);
   // TODO
 }
 #endif
@@ -231,9 +270,12 @@ void SDL_SetClipRect(SDL_Surface *s,SDL_Rect *sr)
 #ifdef _MAC
 void  SDL_FillRect(SDL_Surface *s,SDL_Rect *sr,uint32_t v)
 {
-  printf("SDL_FillRect...\n");
-  if(!s) { printf("s was NULL!\n"); return; }
-  if(!sr) { printf("sr was NULL!\n"); return; }
+  fprintf(debugf,"SDL_FillRect...\n");
+  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
+  if(!sr) { fprintf(debugf,"sr was NULL!\n"); return; }
+  Rect msr;  msr.top=sr->y; msr.left=sr->x; 
+  msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
+  fprintf(debugf,"msr is %d %d %d %d\n",msr.left,msr.top,msr.right,msr.bottom);
   // TODO
 }
 #endif
@@ -242,10 +284,15 @@ void  SDL_FillRect(SDL_Surface *s,SDL_Rect *sr,uint32_t v)
 #ifdef _MAC
 void  SDL_FillRects(SDL_Surface *s,SDL_Rect *rs,uint32_t n,uint32_t v)
 {
-  printf("SDL_FillRects...\n");
-  if(!s) { printf("s was NULL!\n"); return; }
-  if(!rs) { printf("rs was NULL!\n"); return; }
-  // TODO
+  fprintf(debugf,"SDL_FillRects...\n");
+  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
+  if(!rs) { fprintf(debugf,"rs was NULL!\n"); return; }
+  /*
+  for(unsigned int t=0;t<n;t++) {
+    SDL_Rect *sr=&(rs[t]);
+    SDL_FillRect(s,sr,v);
+  }
+  */
 }
 #endif
 
@@ -253,8 +300,8 @@ void  SDL_FillRects(SDL_Surface *s,SDL_Rect *rs,uint32_t n,uint32_t v)
 #ifdef _MAC
 void  SDL_UpdateWindowSurface(SDL_Window *w)
 {
-  printf("SDL_UpdateWindowSurface...\n");
-  if(!w) { printf("w was NULL!\n"); return; }
+  fprintf(debugf,"SDL_UpdateWindowSurface...\n");
+  if(!w) { fprintf(debugf,"w was NULL!\n"); return; }
   // TODO
 }
 #endif
@@ -327,6 +374,20 @@ PlatformSDL::PlatformSDL() :
     shift(0)
 {
 #ifdef _MAC
+#if !TARGET_API_CARBON
+  MaxApplZone();
+  InitGraf(&(qd.thePort));
+  InitFonts();
+#endif
+  FlushEvents(everyEvent,0);
+#if !TARGET_API_CARBON
+  InitWindows();
+  InitMenus();
+  //InitDialogs(NULL);
+  InitCursor();
+#endif
+  debugf=fopen("debug.txt","wb");
+  if(!debugf) { fprintf(debugf,"Couldn't open debug.txt!\n"); exit(5); }
 #else
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
@@ -364,24 +425,39 @@ PlatformSDL::PlatformSDL() :
 #endif
 
 #ifdef _MAC
+  Rect WindowBox;
+  WindowBox.top=40;  WindowBox.left=4;
+  WindowBox.bottom=PLATFORM_SCREEN_HEIGHT+40;  WindowBox.right=PLATFORM_SCREEN_WIDTH+4;
+  macwp=NewCWindow(NULL,&WindowBox,"\pAttack of the PETSCII Robots",true,noGrowDocProc+8,(WindowPtr)(-1L),true,0L);
+#if TARGET_API_CARBON
+  macp=GetWindowPort(macwp);
+  SetPort(macp);
+  windowSurface=&macp;
+  window=&macwp;
+#else
+  SetPort((GrafPort *)GetWindowPort(macwp));
+  windowSurface=(CGrafPort **)&macwp;
+  window=&macwp;
+#endif
+  ShowWindow(macwp);
 #else
     window = SDL_CreateWindow("Attack of the PETSCII Robots", 0, 0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 0);
     windowSurface = SDL_GetWindowSurface(window);
 #endif
 
     bufferSurface = SDL_CreateRGBSurface(0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-    if(!bufferSurface) { printf("Didn't get bufferSurface!\n"); exit(5); }
+    if(!bufferSurface) { fprintf(debugf,"Didn't get bufferSurface!\n"); exit(5); }
     fadeSurface = SDL_CreateRGBSurface(0, 1, 1, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-    if(!fadeSurface) { printf("Didn't get fadeSurface!\n"); exit(5); }
+    if(!fadeSurface) { fprintf(debugf,"Didn't get fadeSurface!\n"); exit(5); }
 #ifdef PLATFORM_COLOR_SUPPORT
-    fontSurface = IMG_Load("c64font.png");
+    fontSurface = IMG_Load("c64font.raw");
 #else
-    fontSurface = IMG_Load("petfont.png");
+    fontSurface = IMG_Load("petfont.raw");
 #endif
-    if(!fontSurface) { printf("Didn't get fontSurface!\n"); exit(5); }
+    if(!fontSurface) { fprintf(debugf,"Didn't get fontSurface!\n"); exit(5); }
 #ifdef PLATFORM_IMAGE_BASED_TILES
-    tileSurface = IMG_Load("tilesalpha.png");
-    if(!tileSurface) { printf("Didn't get tileSurface!\n"); exit(5); }
+    tileSurface = IMG_Load("tilesalpha.raw");
+    if(!tileSurface) { fprintf(debugf,"Didn't get tileSurface!\n"); exit(5); }
 #else
     for (int i = 0; i < 256; i++) {
         tileSurfaces[i] = SDL_CreateRGBSurface(0, 24, 24, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
@@ -391,19 +467,19 @@ PlatformSDL::PlatformSDL() :
     for (int i = 0; i < 3; i++) {
         imageSurfaces[i] = IMG_Load(imageFilenames[i]);
     }
-    itemsSurface = IMG_Load("items.png");
-    if(!itemsSurface) { printf("Didn't get itemsSurface!\n"); exit(5); }
-    keysSurface = IMG_Load("keys.png");
-    if(!keysSurface) { printf("Didn't get keysSurface!\n"); exit(5); }
-    healthSurface = IMG_Load("health.png");
-    if(!healthSurface) { printf("Didn't get healthSurface!\n"); exit(5); }
-    facesSurface = IMG_Load("faces.png");
-    if(!facesSurface) { printf("Didn't get facesSurface!\n"); exit(5); }
-    animTilesSurface = IMG_Load("animtiles.png");
-    if(!animTilesSurface) { printf("Didn't get animTilesSurface!\n"); exit(5); }
+    itemsSurface = IMG_Load("items.raw");
+    if(!itemsSurface) { fprintf(debugf,"Didn't get itemsSurface!\n"); exit(5); }
+    keysSurface = IMG_Load("keys.raw");
+    if(!keysSurface) { fprintf(debugf,"Didn't get keysSurface!\n"); exit(5); }
+    healthSurface = IMG_Load("health.raw");
+    if(!healthSurface) { fprintf(debugf,"Didn't get healthSurface!\n"); exit(5); }
+    facesSurface = IMG_Load("faces.raw");
+    if(!facesSurface) { fprintf(debugf,"Didn't get facesSurface!\n"); exit(5); }
+    animTilesSurface = IMG_Load("animtiles.raw");
+    if(!animTilesSurface) { fprintf(debugf,"Didn't get animTilesSurface!\n"); exit(5); }
 #ifdef PLATFORM_SPRITE_SUPPORT
-    spritesSurface = IMG_Load("spritesalpha.png");
-    if(!spritesSurface) { printf("Didn't get spritesSurface!\n"); exit(5); }
+    spritesSurface = IMG_Load("spritesalpha.raw");
+    if(!spritesSurface) { fprintf(debugf,"Didn't get spritesSurface!\n"); exit(5); }
 #ifdef _MAC
 #else
     SDL_SetColorKey(spritesSurface, SDL_TRUE, 16);
@@ -412,7 +488,7 @@ PlatformSDL::PlatformSDL() :
 #endif
 #ifdef PLATFORM_CURSOR_SUPPORT
     cursorSurface = SDL_CreateRGBSurface(0, 28, 28, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-    if(!cursorSurface) { printf("Didn't get cursorSurface!\n"); exit(5); }
+    if(!cursorSurface) { fprintf(debugf,"Didn't get cursorSurface!\n"); exit(5); }
 #endif
 #ifdef _MAC
 #else
@@ -501,6 +577,8 @@ PlatformSDL::~PlatformSDL()
     SDL_FreeSurface(bufferSurface);
     SDL_FreeSurface(fontSurface);
 #ifdef _MAC
+    //CloseWindow(*window);
+    if(debugf) fclose(debugf);
 #else
     SDL_DestroyWindow(window);
     SDL_JoystickClose(joystick);
@@ -789,6 +867,7 @@ void PlatformSDL::displayImage(Image image)
     SDL_FillRect(bufferSurface, &clearRect, 0xff000000);
 
     if (image == ImageGame) {
+	    fprintf(debugf,"displayImage image==ImageGame\n");
         SDL_Rect sourceRect = { 320 - 56, 0, 56, 128 };
         SDL_Rect destinationRect = { PLATFORM_SCREEN_WIDTH - 56, 0, 56, 128 };
         SDL_BlitSurface(imageSurfaces[image], &sourceRect, bufferSurface, &destinationRect);
@@ -1456,6 +1535,7 @@ void PlatformSDL::renderFrame(bool)
 
     SDL_Rect bufferRect = { 0, 0, loadedImage == ImageGame ? PLATFORM_SCREEN_WIDTH : 320, loadedImage == ImageGame ? PLATFORM_SCREEN_HEIGHT : 200 };
     SDL_Rect windowRect = { 0, 0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT };
+	fprintf(debugf,"Going to SDL_BlitScaled to window...\n");
     SDL_BlitScaled(bufferSurface, &bufferRect, windowSurface, &windowRect);
     if (fadeIntensity != 15) {
         uint32_t intensity = (15 - fadeIntensity) << 24;
