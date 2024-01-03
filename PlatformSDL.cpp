@@ -195,6 +195,10 @@ SDL_Surface *IMG_Load(const char *n)
   fread(&d,sizeof(int),1,f);
   fread(&np,sizeof(int),1,f);
   fprintf(debugf,"Image %s is %dx%dx%d(%d)\n",n,w,h,d,np);
+  if((!d)||(d>32)) { fprintf(debugf,"Bad d %d!\n",d); return NULL; }
+  if((!np)||(np>32)) { fprintf(debugf,"Bad np %d!\n",np); return NULL; }
+  if((!w)||(w>1024)) { fprintf(debugf,"Bad w %d!\n",w); return NULL; }
+  if((!h)||(h>1024)) { fprintf(debugf,"Bad h %d!\n",h); return NULL; }
   SDL_Surface *s=SDL_CreateRGBSurface(0,w,h,d,0,0,0,0);
   if(!s) { fprintf(debugf,"s was NULL!\n"); return NULL; }
   const BitMap *dstBits=NULL;
@@ -233,11 +237,13 @@ void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
   dstBits=(BitMap *)&((GrafPtr)d)->portBits;
 #endif
   //
+#if TARGET_API_CARBON
   Rect t;
   GetPortBounds((GrafPtr)srcBits,&t);
   fprintf(debugf,"srcBits t is %d %d %d %d\n",t.left,t.top,t.right,t.bottom);
   GetPortBounds((GrafPtr)dstBits,&t);
   fprintf(debugf,"dstBits t is %d %d %d %d\n",t.left,t.top,t.right,t.bottom);
+#endif
   //
   CopyBits(srcBits,dstBits,&msr,&mdr,srcCopy,NULL);
 }
@@ -377,7 +383,6 @@ PlatformSDL::PlatformSDL() :
 #if !TARGET_API_CARBON
   MaxApplZone();
   InitGraf(&(qd.thePort));
-  InitFonts();
 #endif
   FlushEvents(everyEvent,0);
 #if !TARGET_API_CARBON
@@ -428,7 +433,7 @@ PlatformSDL::PlatformSDL() :
   Rect WindowBox;
   WindowBox.top=40;  WindowBox.left=4;
   WindowBox.bottom=PLATFORM_SCREEN_HEIGHT+40;  WindowBox.right=PLATFORM_SCREEN_WIDTH+4;
-  macwp=NewCWindow(NULL,&WindowBox,"\pAttack of the PETSCII Robots",true,noGrowDocProc+8,(WindowPtr)(-1L),true,0L);
+  macwp=NewCWindow(NULL,&WindowBox,(ConstStr255Param)"\pAttack of the PETSCII Robots",true,noGrowDocProc+8,(WindowPtr)(-1L),true,0L);
 #if TARGET_API_CARBON
   macp=GetWindowPort(macwp);
   SetPort(macp);
