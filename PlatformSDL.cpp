@@ -151,39 +151,41 @@ static uint16_t joystickButtons[] = {
 
 
 #ifdef _MAC
-WindowPtr macwp;
-CGrafPtr macp;
 FILE *debugf;
 #endif
 
 
 #ifdef _MAC
-SDL_Surface *SDL_CreateRGBSurface(uint32_t flags,uint32_t w,uint32_t h,uint32_t d,uint32_t rm,uint32_t gm,uint32_t bm,uint32_t am)
+GWorldPtr SDL_CreateRGBSurface(uint32_t flags,uint32_t w,uint32_t h,uint32_t d,uint32_t rm,uint32_t gm,uint32_t bm,uint32_t am)
 {
   fprintf(debugf,"SDL_CreateRGBSurface...\n");
-  GWorldPtr *gw=(GWorldPtr *)malloc(sizeof(GWorldPtr));
-  if(!gw) { fprintf(debugf,"gw was NULL!\n"); return NULL; }
+  GWorldPtr gw;
   Rect r;  r.left=0; r.top=0;
   r.bottom=h; r.right=w;
   fprintf(debugf,"r is %d %d %d %d\n",r.left,r.top,r.right,r.bottom);
-  NewGWorld(gw,d,&r,NULL,NULL,0);
+  QDErr err=NewGWorld(&gw,24,&r,NULL,NULL,0);
+  if(err!=noErr) {
+    fprintf(debugf,"QDErr was %d!\n",err);
+	return NULL;
+  }
+  fprintf(debugf,"new gworld at %lx\n",(long)gw);
   return gw;
 }
 #endif
 
 
 #ifdef _MAC
-void SDL_FreeSurface(SDL_Surface *s)
+void SDL_FreeSurface(GWorldPtr s)
 {
   fprintf(debugf,"SDL_FreeSurface...\n");
   if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
-  DisposeGWorld(*s);
+  DisposeGWorld(s);
 }
 #endif
 
 
 #ifdef _MAC
-SDL_Surface *IMG_Load(const char *n)
+GWorldPtr IMG_Load(const char *n)
 {
   fprintf(debugf,"IMG_Load...\n");
   if(!n) { fprintf(debugf,"n was NULL!\n"); return NULL; }
@@ -198,29 +200,44 @@ SDL_Surface *IMG_Load(const char *n)
   if((!d)||(d>32)) { fprintf(debugf,"Bad d %d!\n",d); return NULL; }
   if((!np)||(np>32)) { fprintf(debugf,"Bad np %d!\n",np); return NULL; }
   if((!w)||(w>1024)) { fprintf(debugf,"Bad w %d!\n",w); return NULL; }
-  if((!h)||(h>1024)) { fprintf(debugf,"Bad h %d!\n",h); return NULL; }
-  SDL_Surface *s=SDL_CreateRGBSurface(0,w,h,d,0,0,0,0);
+  if((!h)||(h>10240)) { fprintf(debugf,"Bad h %d!\n",h); return NULL; }
+  GWorldPtr s=SDL_CreateRGBSurface(0,w,h,d,0,0,0,0);
   if(!s) { fprintf(debugf,"s was NULL!\n"); return NULL; }
-  const BitMap *dstBits=NULL;
-#if TARGET_API_CARBON
-  //dstBits=GetPortBitMapForCopyBits(*d);
-#else
-  //dstBits=(BitMap *)&((GrafPtr)d)->portBits;
-#endif
-  // TODO
+  //
+  PixMapHandle pm=GetGWorldPixMap(s);
+  if(!pm) { fprintf(debugf,"pm was NULL!\n"); return NULL; }
+  LockPixels(pm);
+  //
+  unsigned int bpl=GetPixRowBytes(pm);
+  char *dst=GetPixBaseAddr(pm);
+  fprintf(debugf,"bpl=%d\n",bpl);
+  char c;
+  unsigned int off=0;
+  unsigned int sbpl=w*3;
+  for(unsigned int r=0;r<h;r++) {
+    for(unsigned int b=0;b<sbpl;b++) {
+	  fread(&c,1,1,f);
+	  dst[off+b]=c;
+	}
+	off+=bpl;
+  }
+  //
+  UnlockPixels(pm);
   return s;
 }
 #endif
 
 
 #ifdef _MAC
-void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
+void SDL_BlitSurface(GWorldPtr s,SDL_Rect *sr,GWorldPtr d,SDL_Rect *dr)
 {
   fprintf(debugf,"SDL_BlitSurface...\n");
   if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
   if(!sr) { fprintf(debugf,"sr was NULL!\n"); return; }
   if(!d) { fprintf(debugf,"d was NULL!\n"); return; }
   if(!dr) { fprintf(debugf,"dr was NULL!\n"); return; }
+  fprintf(debugf,"s at %lx\n",(long)s);
+  fprintf(debugf,"d at %lx\n",(long)d);
   Rect msr;  msr.top=sr->y; msr.left=sr->x; 
   msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
   Rect mdr;  mdr.top=dr->y; mdr.left=dr->x; 
@@ -230,28 +247,26 @@ void SDL_BlitSurface(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
   const BitMap *srcBits=NULL;  
   const BitMap *dstBits=NULL;
 #if TARGET_API_CARBON
-  srcBits=GetPortBitMapForCopyBits(*s);
-  dstBits=GetPortBitMapForCopyBits(*d);
+  srcBits=GetPortBitMapForCopyBits(s);
+  //srcBits=(BitMap *)*GetGWorldPixMap(s);
+  dstBits=GetPortBitMapForCopyBits(d);
+  dstBits=(BitMap *)*GetGWorldPixMap(d);
+  GrafPtr p;
+  GetPort(&p);
+  //dstBits=GetPortBitMapForCopyBits(p);
+  SetGWorld(d,NULL);
 #else
   srcBits=(BitMap *)&((GrafPtr)s)->portBits;
   dstBits=(BitMap *)&((GrafPtr)d)->portBits;
 #endif
   //
-#if TARGET_API_CARBON
-  Rect t;
-  GetPortBounds((GrafPtr)srcBits,&t);
-  fprintf(debugf,"srcBits t is %d %d %d %d\n",t.left,t.top,t.right,t.bottom);
-  GetPortBounds((GrafPtr)dstBits,&t);
-  fprintf(debugf,"dstBits t is %d %d %d %d\n",t.left,t.top,t.right,t.bottom);
-#endif
-  //
-  CopyBits(srcBits,dstBits,&msr,&mdr,srcCopy,NULL);
+  CopyBits(srcBits,dstBits,&msr,&mdr,srcXor,NULL);
 }
 #endif
 
 
 #ifdef _MAC
-void SDL_BlitScaled(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
+void SDL_BlitScaled(GWorldPtr s,SDL_Rect *sr,GWorldPtr d,SDL_Rect *dr)
 {
   //fprintf(debugf,"SDL_BlitScaled...\n");
   SDL_BlitSurface(s,sr,d,dr);
@@ -260,7 +275,7 @@ void SDL_BlitScaled(SDL_Surface *s,SDL_Rect *sr,SDL_Surface *d,SDL_Rect *dr)
 
 
 #ifdef _MAC
-void SDL_SetClipRect(SDL_Surface *s,SDL_Rect *sr)
+void SDL_SetClipRect(GWorldPtr s,SDL_Rect *sr)
 {
   fprintf(debugf,"SDL_SetClipRect...\n");
   if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
@@ -274,7 +289,7 @@ void SDL_SetClipRect(SDL_Surface *s,SDL_Rect *sr)
 
 
 #ifdef _MAC
-void  SDL_FillRect(SDL_Surface *s,SDL_Rect *sr,uint32_t v)
+void  SDL_FillRect(GWorldPtr s,SDL_Rect *sr,uint32_t v)
 {
   fprintf(debugf,"SDL_FillRect...\n");
   if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
@@ -288,7 +303,7 @@ void  SDL_FillRect(SDL_Surface *s,SDL_Rect *sr,uint32_t v)
 
 
 #ifdef _MAC
-void  SDL_FillRects(SDL_Surface *s,SDL_Rect *rs,uint32_t n,uint32_t v)
+void  SDL_FillRects(GWorldPtr s,SDL_Rect *rs,uint32_t n,uint32_t v)
 {
   fprintf(debugf,"SDL_FillRects...\n");
   if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
@@ -304,7 +319,7 @@ void  SDL_FillRects(SDL_Surface *s,SDL_Rect *rs,uint32_t n,uint32_t v)
 
 
 #ifdef _MAC
-void  SDL_UpdateWindowSurface(SDL_Window *w)
+void  SDL_UpdateWindowSurface(WindowPtr w)
 {
   fprintf(debugf,"SDL_UpdateWindowSurface...\n");
   if(!w) { fprintf(debugf,"w was NULL!\n"); return; }
@@ -381,18 +396,20 @@ PlatformSDL::PlatformSDL() :
 {
 #ifdef _MAC
 #if !TARGET_API_CARBON
-  MaxApplZone();
-  InitGraf(&(qd.thePort));
+  //MaxApplZone();
+  //InitGraf(&(qd.thePort));
 #endif
   FlushEvents(everyEvent,0);
 #if !TARGET_API_CARBON
-  InitWindows();
-  InitMenus();
+  //InitWindows();
+  //InitMenus();
   //InitDialogs(NULL);
   InitCursor();
 #endif
-  debugf=fopen("debug.txt","wb");
+  //debugf=fopen("debug.txt","wb");
+  debugf=stdout;
   if(!debugf) { fprintf(debugf,"Couldn't open debug.txt!\n"); exit(5); }
+  fprintf(debugf,"Starting...\n");
 #else
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
@@ -430,21 +447,19 @@ PlatformSDL::PlatformSDL() :
 #endif
 
 #ifdef _MAC
+  fprintf(debugf,"Going to NewCWindow...\n");
   Rect WindowBox;
   WindowBox.top=40;  WindowBox.left=4;
   WindowBox.bottom=PLATFORM_SCREEN_HEIGHT+40;  WindowBox.right=PLATFORM_SCREEN_WIDTH+4;
-  macwp=NewCWindow(NULL,&WindowBox,(ConstStr255Param)"\pAttack of the PETSCII Robots",true,noGrowDocProc+8,(WindowPtr)(-1L),true,0L);
-#if TARGET_API_CARBON
-  macp=GetWindowPort(macwp);
-  SetPort(macp);
-  windowSurface=&macp;
-  window=&macwp;
+  window=NewCWindow(NULL,&WindowBox,(ConstStr255Param)"\pAttack of the PETSCII Robots",true,noGrowDocProc+8,(WindowPtr)(-1L),true,0L);
+  SetPort((GrafPtr)window);
+#ifdef __MWERKS__
+  windowSurface=(CGrafPtr)window;
 #else
-  SetPort((GrafPort *)GetWindowPort(macwp));
-  windowSurface=(CGrafPort **)&macwp;
-  window=&macwp;
+  windowSurface=GetWindowPort(window);
 #endif
-  ShowWindow(macwp);
+  ShowWindow((WindowPtr)window);
+  fprintf(debugf,"(Window done)\n");
 #else
     window = SDL_CreateWindow("Attack of the PETSCII Robots", 0, 0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 0);
     windowSurface = SDL_GetWindowSurface(window);
@@ -1058,7 +1073,11 @@ void PlatformSDL::renderTile(uint8_t tile, uint16_t x, uint16_t y, uint8_t varia
 void PlatformSDL::renderTiles(uint8_t backgroundTile, uint8_t foregroundTile, uint16_t x, uint16_t y, uint8_t backgroundVariant, uint8_t foregroundVariant)
 {
     SDL_SetClipRect(bufferSurface, &clipRect);
+#ifdef _MAC
+    GWorldPtr backgroundSurface = tileSurface;
+#else
     SDL_Surface* backgroundSurface = tileSurface;
+#endif
 #ifdef PLATFORM_IMAGE_BASED_TILES
     if (animTileMap[backgroundTile] >= 0) {
         backgroundTile = animTileMap[backgroundTile] + backgroundVariant;

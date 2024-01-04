@@ -1,0 +1,25 @@
+**********************************
+NLIB DEBUG OUTPUT BEGINS
+NLIB version: 17.9
+NOTE: sizeof(long)==8
+NOTE: sizeof(char *)==8
+NOTE: _LP64 is set!
+NOTE: __LP64__ is set!
+NOTE: __WORDSIZE == 64!
+byteOrder tester=34 (little-endian)
+****
+****
+os "Unix-variant" version: 0.0
+Args:
+init_fonts() called...
+open_display()...
+Requesting display: 0x0x0
+Going to XOpenDisplay...
+(open_display done...is 1440,876,8/8)
+open_window()...
+n_palette dump:
+256 colors 24-bit mapper score 
+(open_window done...is 320,200)
+*** mycarbon'ShowWindow()' not implemented!
+*** NewGWorld()' not implemented!
+*** NewGWorld()' not implemented!

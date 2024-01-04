@@ -8,10 +8,10 @@
 #define PlatformClass PlatformSDL
 
 #define PLATFORM_NAME "sdl" 
-//#define PLATFORM_SCREEN_WIDTH 440 
-#define PLATFORM_SCREEN_WIDTH 320
-//#define PLATFORM_SCREEN_HEIGHT 224 
-#define PLATFORM_SCREEN_HEIGHT 200
+#define PLATFORM_SCREEN_WIDTH 440 
+//#define PLATFORM_SCREEN_WIDTH 320
+#define PLATFORM_SCREEN_HEIGHT 224 
+//#define PLATFORM_SCREEN_HEIGHT 200
 #define PLATFORM_MAP_WINDOW_TILES_WIDTH 16 
 #define PLATFORM_MAP_WINDOW_TILES_HEIGHT 8 
 //#define PLATFORM_INTRO_OPTIONS 3
@@ -39,8 +39,7 @@
 #include <QDOffscreen.h>
 #include <MacWindows.h>
 #endif
-#define SDL_Surface GWorldPtr
-#define SDL_Window WindowPtr
+#define SDL_Surface void
 struct SDL_Rect { int x,y,w,h; };
 struct SDL_Color { int r,g,b,i; };
 struct SDL_Palette { SDL_Color *colors; };
@@ -139,9 +138,37 @@ private:
     SDL_AudioDeviceID audioDeviceID;
 #endif
 #ifdef _MAC
+    WindowPtr window;
+    GWorldPtr windowSurface;
+    GWorldPtr bufferSurface;
+    GWorldPtr fadeSurface;
+    GWorldPtr fontSurface;
+#ifdef PLATFORM_IMAGE_BASED_TILES
+    GWorldPtr tileSurface;
+#else
+    GWorldPtr tileSurfaces[256];
+#endif // PLATFORM_IMAGE_BASED_TILES
+#ifdef PLATFORM_IMAGE_SUPPORT
+    GWorldPtr imageSurfaces[3];
+    GWorldPtr itemsSurface;
+    GWorldPtr keysSurface;
+    GWorldPtr healthSurface;
+    GWorldPtr facesSurface;
+    GWorldPtr animTilesSurface;
+    SDL_Palette* palette;
+#ifdef PLATFORM_SPRITE_SUPPORT
+    GWorldPtr spritesSurface;
+#endif // PLATFORM_SPRITE_SUPPORT
+#endif // PLATFORM_IMAGE_SUPPORT
+#ifdef PLATFORM_CURSOR_SUPPORT
+    GWorldPtr cursorSurface;
+    SDL_Rect cursorRect;
+#ifdef PLATFORM_CURSOR_SHAPE_SUPPORT
+    CursorShape cursorShape;
+#endif // PLATFORM_CURSOR_SHAPE_SUPPORT
+#endif // PLATFORM_CURSOR_SUPPORT
 #else
     SDL_Joystick* joystick;
-#endif
     SDL_Window* window;
     SDL_Surface* windowSurface;
     SDL_Surface* bufferSurface;
@@ -151,7 +178,7 @@ private:
     SDL_Surface* tileSurface;
 #else
     SDL_Surface* tileSurfaces[256];
-#endif
+#endif // PLATFORM_IMAGE_BASED_TILES
 #ifdef PLATFORM_IMAGE_SUPPORT
     SDL_Surface* imageSurfaces[3];
     SDL_Surface* itemsSurface;
@@ -162,15 +189,16 @@ private:
     SDL_Palette* palette;
 #ifdef PLATFORM_SPRITE_SUPPORT
     SDL_Surface* spritesSurface;
-#endif
-#endif
+#endif // PLATFORM_SPRITE_SUPPORT
+#endif // PLATFORM_IMAGE_SUPPORT
 #ifdef PLATFORM_CURSOR_SUPPORT
     SDL_Surface* cursorSurface;
     SDL_Rect cursorRect;
 #ifdef PLATFORM_CURSOR_SHAPE_SUPPORT
     CursorShape cursorShape;
-#endif
-#endif
+#endif // PLATFORM_CURSOR_SHAPE_SUPPORT
+#endif // PLATFORM_CURSOR_SUPPORT
+#endif // _MAC
     int framesPerSecond_;
 #ifdef PLATFORM_MODULE_BASED_AUDIO
     uint8_t* moduleData;
