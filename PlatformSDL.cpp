@@ -50,9 +50,15 @@ static int8_t animTileMap[256] = {
 static char MAPNAME[] = "level-a";
 #ifdef PLATFORM_IMAGE_SUPPORT
 static const char* imageFilenames[] = {
+#ifdef _MAC
     "introscreen.raw",
     "gamescreen.raw",
     "gameover.raw"
+#else
+    "introscreen.png",
+    "gamescreen.png",
+    "gameover.png"
+#endif
 };
 #endif
 #ifdef PLATFORM_MODULE_BASED_AUDIO
@@ -88,7 +94,32 @@ static const char* sampleFilenames[] = {
 
 static uint8_t standardControls[] = {
 #ifdef _MAC
-  0
+    'i', // MOVE UP orig: 56 (8)
+    'k', // MOVE DOWN orig: 50 (2)
+    'j', // MOVE LEFT orig: 52 (4)
+    'l', // MOVE RIGHT orig: 54 (6)
+    'w', // FIRE UP
+    's', // FIRE DOWN
+    'a', // FIRE LEFT
+    'd', // FIRE RIGHT
+    '1', // CYCLE WEAPONS
+    '2', // CYCLE ITEMS
+    ' ', // USE ITEM
+    'z', // SEARCH OBJECT
+    'm', // MOVE OBJECT
+    '3', // LIVE MAP
+    '4' + 0x80, // LIVE MAP ROBOTS
+    '5', // PAUSE
+    '6', // MUSIC
+    'c' + 0x80, // CHEAT
+    30, // CURSOR UP
+    31, // CURSOR DOWN
+    28, // CURSOR LEFT
+    29, // CURSOR RIGHT
+    ' ', // SPACE
+    13, // RETURN
+    'y', // YES
+    'n' // NO
 #else
     SDL_SCANCODE_I, // MOVE UP orig: 56 (8)
     SDL_SCANCODE_K, // MOVE DOWN orig: 50 (2)
@@ -163,7 +194,7 @@ GWorldPtr SDL_CreateRGBSurface(uint32_t flags,uint32_t w,uint32_t h,uint32_t d,u
   Rect r;  r.left=0; r.top=0;
   r.bottom=h; r.right=w;
   fprintf(debugf,"r is %d %d %d %d\n",r.left,r.top,r.right,r.bottom);
-  QDErr err=NewGWorld(&gw,24,&r,NULL,NULL,0);
+  QDErr err=NewGWorld(&gw,8,&r,NULL,NULL,0);
   if(err!=noErr) {
     fprintf(debugf,"QDErr was %d!\n",err);
 	return NULL;
@@ -191,11 +222,14 @@ GWorldPtr IMG_Load(const char *n)
   if(!n) { fprintf(debugf,"n was NULL!\n"); return NULL; }
   FILE *f=fopen(n,"rb");
   if(!f) { fprintf(debugf,"Couldn't open %s!\n",n); return NULL; }
-  int w,h,d,np;
-  fread(&w,sizeof(int),1,f);
-  fread(&h,sizeof(int),1,f);
-  fread(&d,sizeof(int),1,f);
-  fread(&np,sizeof(int),1,f);
+  uint32_t w,h,d,np;
+  fread(&w,sizeof(uint32_t),1,f);
+  fread(&h,sizeof(uint32_t),1,f);
+  fread(&d,sizeof(uint32_t),1,f);
+  fread(&np,sizeof(uint32_t),1,f);
+#if 0
+  w=ntohl(w); h=ntohl(h); d=ntohl(d); np=ntohl(np); 
+#endif
   fprintf(debugf,"Image %s is %dx%dx%d(%d)\n",n,w,h,d,np);
   if((!d)||(d>32)) { fprintf(debugf,"Bad d %d!\n",d); return NULL; }
   if((!np)||(np>32)) { fprintf(debugf,"Bad np %d!\n",np); return NULL; }
@@ -208,12 +242,17 @@ GWorldPtr IMG_Load(const char *n)
   if(!pm) { fprintf(debugf,"pm was NULL!\n"); return NULL; }
   LockPixels(pm);
   //
-  unsigned int bpl=GetPixRowBytes(pm);
+  unsigned int bpl=0;
+#if TARGET_API_CARBON
+  bpl=GetPixRowBytes(pm);
+#else
+  bpl=(*pm)->rowBytes&0x3fff;
+#endif
   char *dst=GetPixBaseAddr(pm);
   fprintf(debugf,"bpl=%d\n",bpl);
   char c;
   unsigned int off=0;
-  unsigned int sbpl=w*3;
+  unsigned int sbpl=w;
   for(unsigned int r=0;r<h;r++) {
     for(unsigned int b=0;b<sbpl;b++) {
 	  fread(&c,1,1,f);
@@ -231,19 +270,18 @@ GWorldPtr IMG_Load(const char *n)
 #ifdef _MAC
 void SDL_BlitSurface(GWorldPtr s,SDL_Rect *sr,GWorldPtr d,SDL_Rect *dr)
 {
-  fprintf(debugf,"SDL_BlitSurface...\n");
+  //fprintf(debugf,"SDL_BlitSurface...\n");
   if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
   if(!sr) { fprintf(debugf,"sr was NULL!\n"); return; }
   if(!d) { fprintf(debugf,"d was NULL!\n"); return; }
   if(!dr) { fprintf(debugf,"dr was NULL!\n"); return; }
-  fprintf(debugf,"s at %lx\n",(long)s);
-  fprintf(debugf,"d at %lx\n",(long)d);
+  //fprintf(debugf,"s at %lx\n",(long)s); fprintf(debugf,"d at %lx\n",(long)d);
   Rect msr;  msr.top=sr->y; msr.left=sr->x; 
   msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
   Rect mdr;  mdr.top=dr->y; mdr.left=dr->x; 
   mdr.bottom=dr->y+dr->h;  mdr.right=dr->x+dr->w;
-  fprintf(debugf,"msr is %d %d %d %d\n",msr.left,msr.top,msr.right,msr.bottom);
-  fprintf(debugf,"mdr is %d %d %d %d\n",mdr.left,mdr.top,mdr.right,mdr.bottom);
+  //fprintf(debugf,"msr is %d %d %d %d\n",msr.left,msr.top,msr.right,msr.bottom);
+  //fprintf(debugf,"mdr is %d %d %d %d\n",mdr.left,mdr.top,mdr.right,mdr.bottom);
   const BitMap *srcBits=NULL;  
   const BitMap *dstBits=NULL;
 #if TARGET_API_CARBON
@@ -260,7 +298,7 @@ void SDL_BlitSurface(GWorldPtr s,SDL_Rect *sr,GWorldPtr d,SDL_Rect *dr)
   dstBits=(BitMap *)&((GrafPtr)d)->portBits;
 #endif
   //
-  CopyBits(srcBits,dstBits,&msr,&mdr,srcXor,NULL);
+  CopyBits(srcBits,dstBits,&msr,&mdr,srcCopy,NULL);
 }
 #endif
 
@@ -321,7 +359,7 @@ void  SDL_FillRects(GWorldPtr s,SDL_Rect *rs,uint32_t n,uint32_t v)
 #ifdef _MAC
 void  SDL_UpdateWindowSurface(WindowPtr w)
 {
-  fprintf(debugf,"SDL_UpdateWindowSurface...\n");
+  //fprintf(debugf,"SDL_UpdateWindowSurface...\n");
   if(!w) { fprintf(debugf,"w was NULL!\n"); return; }
   // TODO
 }
@@ -466,14 +504,19 @@ PlatformSDL::PlatformSDL() :
 #endif
 
     bufferSurface = SDL_CreateRGBSurface(0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+#ifdef _MAC
     if(!bufferSurface) { fprintf(debugf,"Didn't get bufferSurface!\n"); exit(5); }
+#endif
     fadeSurface = SDL_CreateRGBSurface(0, 1, 1, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+#ifdef _MAC
     if(!fadeSurface) { fprintf(debugf,"Didn't get fadeSurface!\n"); exit(5); }
+#endif
+#ifdef _MAC
 #ifdef PLATFORM_COLOR_SUPPORT
     fontSurface = IMG_Load("c64font.raw");
 #else
     fontSurface = IMG_Load("petfont.raw");
-#endif
+#endif // PLATFORM_COLOR_SUPPORT
     if(!fontSurface) { fprintf(debugf,"Didn't get fontSurface!\n"); exit(5); }
 #ifdef PLATFORM_IMAGE_BASED_TILES
     tileSurface = IMG_Load("tilesalpha.raw");
@@ -482,7 +525,22 @@ PlatformSDL::PlatformSDL() :
     for (int i = 0; i < 256; i++) {
         tileSurfaces[i] = SDL_CreateRGBSurface(0, 24, 24, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
     }
-#endif
+#endif // PLATFORM_IMAGE_BASED_TILES
+#else
+#ifdef PLATFORM_COLOR_SUPPORT
+    fontSurface = IMG_Load("c64font.png");
+#else
+    fontSurface = IMG_Load("petfont.png");
+#endif // PLATFORM_COLOR_SUPPORT
+#ifdef PLATFORM_IMAGE_BASED_TILES
+    tileSurface = IMG_Load("tilesalpha.png");
+#else
+    for (int i = 0; i < 256; i++) {
+        tileSurfaces[i] = SDL_CreateRGBSurface(0, 24, 24, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+    }
+#endif // PLATFORM_IMAGE_BASED_TILES
+#endif  // _MAC
+#ifdef _MAC
 #ifdef PLATFORM_IMAGE_SUPPORT
     for (int i = 0; i < 3; i++) {
         imageSurfaces[i] = IMG_Load(imageFilenames[i]);
@@ -500,16 +558,33 @@ PlatformSDL::PlatformSDL() :
 #ifdef PLATFORM_SPRITE_SUPPORT
     spritesSurface = IMG_Load("spritesalpha.raw");
     if(!spritesSurface) { fprintf(debugf,"Didn't get spritesSurface!\n"); exit(5); }
-#ifdef _MAC
 #else
     SDL_SetColorKey(spritesSurface, SDL_TRUE, 16);
-#endif
-#endif
-#endif
+#endif // PLATFORM_SPRITE_SUPPORT
+#endif // PLATFORM_IMAGE_SUPPORT
+#else
+#ifdef PLATFORM_IMAGE_SUPPORT
+    for (int i = 0; i < 3; i++) {
+        imageSurfaces[i] = IMG_Load(imageFilenames[i]);
+    }
+    itemsSurface = IMG_Load("items.png");
+    keysSurface = IMG_Load("keys.png");
+    healthSurface = IMG_Load("health.png");
+    facesSurface = IMG_Load("faces.png");
+    animTilesSurface = IMG_Load("animtiles.png");
+#ifdef PLATFORM_SPRITE_SUPPORT
+    spritesSurface = IMG_Load("spritesalpha.png");
+#else
+    SDL_SetColorKey(spritesSurface, SDL_TRUE, 16);
+#endif // PLATFORM_SPRITE_SUPPORT
+#endif // PLATFORM_IMAGE_SUPPORT
+#endif // _MAC
 #ifdef PLATFORM_CURSOR_SUPPORT
     cursorSurface = SDL_CreateRGBSurface(0, 28, 28, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+#ifdef _MAC
     if(!cursorSurface) { fprintf(debugf,"Didn't get cursorSurface!\n"); exit(5); }
-#endif
+#endif // _MAC
+#endif // PLATFORM_CURSOR_SUPPORT
 #ifdef _MAC
 #else
     SDL_SetSurfaceBlendMode(fontSurface, SDL_BLENDMODE_NONE);
@@ -597,7 +672,7 @@ PlatformSDL::~PlatformSDL()
     SDL_FreeSurface(bufferSurface);
     SDL_FreeSurface(fontSurface);
 #ifdef _MAC
-    //CloseWindow(*window);
+    //CloseWindow(window);
     if(debugf) fclose(debugf);
 #else
     SDL_DestroyWindow(window);
@@ -721,7 +796,26 @@ void PlatformSDL::chrout(uint8_t character)
 uint8_t PlatformSDL::readKeyboard()
 {
 #ifdef _MAC
-  return 0;
+  EventRecord event;
+  int type,val;
+#if !TARGET_API_CARBON
+  SystemTask();
+#endif
+  val=EventAvail(everyEvent,&event);
+  if(val) {
+	GetNextEvent(everyEvent,&event);
+    type=event.what;
+    switch(type) {
+	  case keyDown:
+	  case keyUp:
+	    keyToReturn=event.message&0xff;
+		fprintf(debugf,"mac keypress '%c' (%d)\n",keyToReturn,keyToReturn);
+	    break;
+	  default:
+	    fprintf(debugf,"mac event.what=%d skipped!\n",type);
+	    break;
+	}
+  }
 #else
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -770,10 +864,11 @@ uint8_t PlatformSDL::readKeyboard()
         }
     }
 
+#endif
     uint8_t result = keyToReturn;
     keyToReturn = 0xff;
+	if(result!=0xff) fprintf(debugf,"readKeyboard returning '%c' (%d)\n",result,result);
     return result;
-#endif
 }
 
 void PlatformSDL::keyRepeat()
@@ -887,7 +982,9 @@ void PlatformSDL::displayImage(Image image)
     SDL_FillRect(bufferSurface, &clearRect, 0xff000000);
 
     if (image == ImageGame) {
+#ifdef _MAC
 	    fprintf(debugf,"displayImage image==ImageGame\n");
+#endif
         SDL_Rect sourceRect = { 320 - 56, 0, 56, 128 };
         SDL_Rect destinationRect = { PLATFORM_SCREEN_WIDTH - 56, 0, 56, 128 };
         SDL_BlitSurface(imageSurfaces[image], &sourceRect, bufferSurface, &destinationRect);
@@ -1559,7 +1656,9 @@ void PlatformSDL::renderFrame(bool)
 
     SDL_Rect bufferRect = { 0, 0, loadedImage == ImageGame ? PLATFORM_SCREEN_WIDTH : 320, loadedImage == ImageGame ? PLATFORM_SCREEN_HEIGHT : 200 };
     SDL_Rect windowRect = { 0, 0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT };
-	fprintf(debugf,"Going to SDL_BlitScaled to window...\n");
+#ifdef _MAC
+	//fprintf(debugf,"Going to SDL_BlitScaled to window...\n");
+#endif
     SDL_BlitScaled(bufferSurface, &bufferRect, windowSurface, &windowRect);
     if (fadeIntensity != 15) {
         uint32_t intensity = (15 - fadeIntensity) << 24;

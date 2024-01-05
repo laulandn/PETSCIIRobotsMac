@@ -25,7 +25,7 @@
 		isa = PBXTextBookmark;
 		name = "PlatformSDL.cpp: 403";
 		rLen = 0;
-		rLoc = 14416;
+		rLoc = 15033;
 		rType = 0;
 		vrLen = 1596;
 		vrLoc = 11731;
@@ -78,6 +78,100 @@
 		rLoc = 0;
 		rType = 0;
 		vrLen = 1714;
+		vrLoc = 0;
+	};
+	0153E8CD2B47A29100248844 = {
+		fRef = 01C2636C2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.h: 14";
+		rLen = 0;
+		rLoc = 270;
+		rType = 0;
+		vrLen = 710;
+		vrLoc = 6874;
+	};
+	0153E8CE2B47A29100248844 = {
+		fRef = 01C2636A2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "Platform.h: _PLATFORM_H";
+		rLen = 0;
+		rLoc = 39;
+		rType = 0;
+		vrLen = 703;
+		vrLoc = 0;
+	};
+	0183B25D2B47A364009B98E8 = {
+		fRef = 01C2636C2B2FF4EF00B4FF8D;
+		isa = PBXBookmark;
+	};
+	0183B2632B47A4EA009B98E8 = {
+		fRef = 01C263672B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "petrobots.cpp: 237";
+		rLen = 0;
+		rLoc = 8213;
+		rType = 0;
+		vrLen = 1677;
+		vrLoc = 7265;
+	};
+	0183B2642B47A4EA009B98E8 = {
+		fRef = 01C2636B2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.cpp: 120";
+		rLen = 0;
+		rLoc = 4117;
+		rType = 0;
+		vrLen = 1393;
+		vrLoc = 1390;
+	};
+	0183B2652B47A4EA009B98E8 = {
+		fRef = 01C2636B2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.cpp: 120";
+		rLen = 0;
+		rLoc = 4117;
+		rType = 0;
+		vrLen = 729;
+		vrLoc = 3480;
+	};
+	0183B2662B47A4EA009B98E8 = {
+		fRef = 01C263672B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "petrobots.cpp: 237";
+		rLen = 0;
+		rLoc = 8213;
+		rType = 0;
+		vrLen = 1677;
+		vrLoc = 7265;
+	};
+	0183B2672B47A4EA009B98E8 = {
+		fRef = 01C2636B2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.cpp: 120";
+		rLen = 0;
+		rLoc = 4117;
+		rType = 0;
+		vrLen = 1393;
+		vrLoc = 1390;
+	};
+	0183B2682B47A4EA009B98E8 = {
+		fRef = 01C2636C2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.h: PLATFORM_NAME";
+		rLen = 0;
+		rLoc = 124;
+		rType = 0;
+		vrLen = 745;
+		vrLoc = 0;
+	};
+	0183B26D2B47A4EA009B98E8 = {
+		fRef = 01C2636C2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.h: 14";
+		rLen = 0;
+		rLoc = 270;
+		rType = 0;
+		vrLen = 1070;
 		vrLoc = 0;
 	};
 	018752272B2FF4390050513D = {
@@ -596,16 +690,6 @@
 		indexTemplatePath = "";
 		isa = PBXCodeSenseManager;
 	};
-	0188928A2B42829800718BA7 = {
-		fRef = 01C263672B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = iff;
-		rLen = 3;
-		rLoc = 97931;
-		rType = 0;
-		vrLen = 1048;
-		vrLoc = 97364;
-	};
 	018892942B42833700718BA7 = {
 		fRef = 01C263682B2FF4EF00B4FF8D;
 		isa = PBXTextBookmark;
@@ -614,16 +698,6 @@
 		rLoc = 0;
 		rType = 0;
 		vrLen = 1714;
-		vrLoc = 0;
-	};
-	018892952B42833700718BA7 = {
-		fRef = 01C2636A2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "Platform.h: _PLATFORM_H";
-		rLen = 0;
-		rLoc = 39;
-		rType = 0;
-		vrLen = 782;
 		vrLoc = 0;
 	};
 	01C2630D2B2FF4BD00B4FF8D = {
@@ -663,8 +737,8 @@
 	01C263672B2FF4EF00B4FF8D = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1490, 82572}}";
-			sepNavSelRange = "{97931, 3}";
-			sepNavVisRect = "{{0, 41276}, {715, 483}}";
+			sepNavSelRange = "{8213, 0}";
+			sepNavVisRect = "{{0, 3091}, {560, 440}}";
 		};
 	};
 	01C263682B2FF4EF00B4FF8D = {
@@ -679,24 +753,24 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {998, 2506}}";
 			sepNavSelRange = "{39, 0}";
-			sepNavVisRect = "{{0, 0}, {715, 483}}";
+			sepNavVisRect = "{{0, 0}, {715, 440}}";
 			sepNavWindowFrame = "{{15, 42}, {895, 981}}";
 		};
 	};
 	01C2636B2B2FF4EF00B4FF8D = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1388, 21700}}";
-			sepNavSelRange = "{6485, 0}";
-			sepNavVisRect = "{{0, 2580}, {715, 483}}";
-			sepNavWindowFrame = "{{38, 21}, {895, 981}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1388, 23422}}";
+			sepNavSelRange = "{4117, 0}";
+			sepNavVisRect = "{{0, 436}, {560, 440}}";
+			sepNavWindowFrame = "{{38, 0}, {895, 746}}";
 		};
 	};
 	01C2636C2B2FF4EF00B4FF8D = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {950, 3038}}";
-			sepNavSelRange = "{270, 0}";
-			sepNavVisRect = "{{0, 0}, {715, 483}}";
-			sepNavWindowFrame = "{{38, 21}, {895, 981}}";
+			sepNavIntBoundsRect = "{{0, 0}, {950, 3430}}";
+			sepNavSelRange = "{124, 0}";
+			sepNavVisRect = "{{0, 0}, {560, 440}}";
+			sepNavWindowFrame = "{{38, 0}, {895, 746}}";
 		};
 	};
 	01C2636E2B2FF4EF00B4FF8D = {
@@ -715,36 +789,6 @@
 		rType = 0;
 		vrLen = 782;
 		vrLoc = 0;
-	};
-	01D6FC042B428B4600E75594 = {
-		fRef = 01C2636C2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "PlatformSDL.h: PLATFORM_SCREEN_HEIGHT";
-		rLen = 0;
-		rLoc = 270;
-		rType = 0;
-		vrLen = 818;
-		vrLoc = 0;
-	};
-	01FDEF222B42953900423A58 = {
-		fRef = 01C2636B2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "PlatformSDL.cpp: 202";
-		rLen = 0;
-		rLoc = 6485;
-		rType = 0;
-		vrLen = 1085;
-		vrLoc = 5885;
-	};
-	01FDEF232B42953900423A58 = {
-		fRef = 01C2636B2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "PlatformSDL.cpp: 202";
-		rLen = 0;
-		rLoc = 6485;
-		rType = 0;
-		vrLen = 1085;
-		vrLoc = 5885;
 	};
 	20286C28FDCF999611CA2CEA = {
 		activeBuildStyle = 4A9504C5FFE6A39111CA0CBA;
@@ -777,7 +821,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					517,
+					367,
 					20,
 					48,
 					43,
@@ -794,8 +838,8 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 725783136;
-			PBXWorkspaceStateSaveDate = 725783136;
+			PBXPerProjectTemplateStateSaveDate = 726115029;
+			PBXWorkspaceStateSaveDate = 726115029;
 		};
 		perUserProjectItems = {
 			013DAE6E2B3DF2FB0086DC50 = 013DAE6E2B3DF2FB0086DC50;
@@ -806,15 +850,20 @@
 			013DAE782B3DF2FB0086DC50 = 013DAE782B3DF2FB0086DC50;
 			013DAE7B2B3DF2FB0086DC50 = 013DAE7B2B3DF2FB0086DC50;
 			013DAE7C2B3DF2FB0086DC50 = 013DAE7C2B3DF2FB0086DC50;
-			0188928A2B42829800718BA7 = 0188928A2B42829800718BA7;
+			0153E8CD2B47A29100248844 = 0153E8CD2B47A29100248844;
+			0153E8CE2B47A29100248844 = 0153E8CE2B47A29100248844;
+			0183B25D2B47A364009B98E8 = 0183B25D2B47A364009B98E8;
+			0183B2632B47A4EA009B98E8 = 0183B2632B47A4EA009B98E8;
+			0183B2642B47A4EA009B98E8 = 0183B2642B47A4EA009B98E8;
+			0183B2652B47A4EA009B98E8 = 0183B2652B47A4EA009B98E8;
+			0183B2662B47A4EA009B98E8 = 0183B2662B47A4EA009B98E8;
+			0183B2672B47A4EA009B98E8 = 0183B2672B47A4EA009B98E8;
+			0183B2682B47A4EA009B98E8 = 0183B2682B47A4EA009B98E8;
+			0183B26D2B47A4EA009B98E8 = 0183B26D2B47A4EA009B98E8;
 			018892942B42833700718BA7 = 018892942B42833700718BA7;
-			018892952B42833700718BA7 = 018892952B42833700718BA7;
 			01C2630D2B2FF4BD00B4FF8D = 01C2630D2B2FF4BD00B4FF8D;
 			01C2630F2B2FF4BD00B4FF8D = 01C2630F2B2FF4BD00B4FF8D;
 			01C263B52B2FF6B000B4FF8D = 01C263B52B2FF6B000B4FF8D;
-			01D6FC042B428B4600E75594 = 01D6FC042B428B4600E75594;
-			01FDEF222B42953900423A58 = 01FDEF222B42953900423A58;
-			01FDEF232B42953900423A58 = 01FDEF232B42953900423A58;
 		};
 		sourceControlManager = 018752362B2FF43F0050513D;
 		userBuildSettings = {

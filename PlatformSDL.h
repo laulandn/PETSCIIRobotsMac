@@ -7,7 +7,7 @@
 
 #define PlatformClass PlatformSDL
 
-#define PLATFORM_NAME "sdl" 
+#define PLATFORM_NAME "macintosh" 
 #define PLATFORM_SCREEN_WIDTH 440 
 //#define PLATFORM_SCREEN_WIDTH 320
 #define PLATFORM_SCREEN_HEIGHT 224 
