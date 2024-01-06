@@ -1,5 +1,15 @@
 // !$*UTF8*$!
 {
+	011BF4F92B485CB000DD8B1D = {
+		fRef = 01C263672B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "petrobots.cpp: 237";
+		rLen = 0;
+		rLoc = 8203;
+		rType = 0;
+		vrLen = 1424;
+		vrLoc = 7406;
+	};
 	013DAE6E2B3DF2FB0086DC50 = {
 		fRef = 01C263662B2FF4EF00B4FF8D;
 		isa = PBXTextBookmark;
@@ -25,7 +35,7 @@
 		isa = PBXTextBookmark;
 		name = "PlatformSDL.cpp: 403";
 		rLen = 0;
-		rLoc = 15033;
+		rLoc = 15029;
 		rType = 0;
 		vrLen = 1596;
 		vrLoc = 11731;
@@ -55,7 +65,7 @@
 		isa = PBXTextBookmark;
 		name = "PlatformSDL.h: PLATFORM_SCREEN_WIDTH";
 		rLen = 0;
-		rLoc = 159;
+		rLoc = 163;
 		rType = 0;
 		vrLen = 949;
 		vrLoc = 0;
@@ -80,16 +90,6 @@
 		vrLen = 1714;
 		vrLoc = 0;
 	};
-	0153E8CD2B47A29100248844 = {
-		fRef = 01C2636C2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "PlatformSDL.h: 14";
-		rLen = 0;
-		rLoc = 270;
-		rType = 0;
-		vrLen = 710;
-		vrLoc = 6874;
-	};
 	0153E8CE2B47A29100248844 = {
 		fRef = 01C2636A2B2FF4EF00B4FF8D;
 		isa = PBXTextBookmark;
@@ -98,80 +98,6 @@
 		rLoc = 39;
 		rType = 0;
 		vrLen = 703;
-		vrLoc = 0;
-	};
-	0183B25D2B47A364009B98E8 = {
-		fRef = 01C2636C2B2FF4EF00B4FF8D;
-		isa = PBXBookmark;
-	};
-	0183B2632B47A4EA009B98E8 = {
-		fRef = 01C263672B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "petrobots.cpp: 237";
-		rLen = 0;
-		rLoc = 8213;
-		rType = 0;
-		vrLen = 1677;
-		vrLoc = 7265;
-	};
-	0183B2642B47A4EA009B98E8 = {
-		fRef = 01C2636B2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "PlatformSDL.cpp: 120";
-		rLen = 0;
-		rLoc = 4117;
-		rType = 0;
-		vrLen = 1393;
-		vrLoc = 1390;
-	};
-	0183B2652B47A4EA009B98E8 = {
-		fRef = 01C2636B2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "PlatformSDL.cpp: 120";
-		rLen = 0;
-		rLoc = 4117;
-		rType = 0;
-		vrLen = 729;
-		vrLoc = 3480;
-	};
-	0183B2662B47A4EA009B98E8 = {
-		fRef = 01C263672B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "petrobots.cpp: 237";
-		rLen = 0;
-		rLoc = 8213;
-		rType = 0;
-		vrLen = 1677;
-		vrLoc = 7265;
-	};
-	0183B2672B47A4EA009B98E8 = {
-		fRef = 01C2636B2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "PlatformSDL.cpp: 120";
-		rLen = 0;
-		rLoc = 4117;
-		rType = 0;
-		vrLen = 1393;
-		vrLoc = 1390;
-	};
-	0183B2682B47A4EA009B98E8 = {
-		fRef = 01C2636C2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "PlatformSDL.h: PLATFORM_NAME";
-		rLen = 0;
-		rLoc = 124;
-		rType = 0;
-		vrLen = 745;
-		vrLoc = 0;
-	};
-	0183B26D2B47A4EA009B98E8 = {
-		fRef = 01C2636C2B2FF4EF00B4FF8D;
-		isa = PBXTextBookmark;
-		name = "PlatformSDL.h: 14";
-		rLen = 0;
-		rLoc = 270;
-		rType = 0;
-		vrLen = 1070;
 		vrLoc = 0;
 	};
 	018752272B2FF4390050513D = {
@@ -737,8 +663,8 @@
 	01C263672B2FF4EF00B4FF8D = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1490, 82572}}";
-			sepNavSelRange = "{8213, 0}";
-			sepNavVisRect = "{{0, 3091}, {560, 440}}";
+			sepNavSelRange = "{8203, 0}";
+			sepNavVisRect = "{{0, 3116}, {565, 391}}";
 		};
 	};
 	01C263682B2FF4EF00B4FF8D = {
@@ -759,17 +685,17 @@
 	};
 	01C2636B2B2FF4EF00B4FF8D = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1388, 23422}}";
-			sepNavSelRange = "{4117, 0}";
-			sepNavVisRect = "{{0, 436}, {560, 440}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1388, 23646}}";
+			sepNavSelRange = "{53275, 0}";
+			sepNavVisRect = "{{0, 4452}, {565, 391}}";
 			sepNavWindowFrame = "{{38, 0}, {895, 746}}";
 		};
 	};
 	01C2636C2B2FF4EF00B4FF8D = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {950, 3430}}";
-			sepNavSelRange = "{124, 0}";
-			sepNavVisRect = "{{0, 0}, {560, 440}}";
+			sepNavIntBoundsRect = "{{0, 0}, {950, 3556}}";
+			sepNavSelRange = "{48, 0}";
+			sepNavVisRect = "{{0, 0}, {565, 391}}";
 			sepNavWindowFrame = "{{38, 0}, {895, 746}}";
 		};
 	};
@@ -789,6 +715,36 @@
 		rType = 0;
 		vrLen = 782;
 		vrLoc = 0;
+	};
+	01E6143A2B49C504004F7B04 = {
+		fRef = 01C2636C2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.h: _MAC";
+		rLen = 0;
+		rLoc = 48;
+		rType = 0;
+		vrLen = 701;
+		vrLoc = 0;
+	};
+	01E6143D2B49C504004F7B04 = {
+		fRef = 01C2636B2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.cpp: 1689";
+		rLen = 0;
+		rLoc = 53275;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 9570;
+	};
+	01ECCB242B49C0F60019304F = {
+		fRef = 01C2636B2B2FF4EF00B4FF8D;
+		isa = PBXTextBookmark;
+		name = "PlatformSDL.cpp: 1689";
+		rLen = 0;
+		rLoc = 53275;
+		rType = 0;
+		vrLen = 845;
+		vrLoc = 9612;
 	};
 	20286C28FDCF999611CA2CEA = {
 		activeBuildStyle = 4A9504C5FFE6A39111CA0CBA;
@@ -838,10 +794,11 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 726115029;
-			PBXWorkspaceStateSaveDate = 726115029;
+			PBXPerProjectTemplateStateSaveDate = 726253760;
+			PBXWorkspaceStateSaveDate = 726253760;
 		};
 		perUserProjectItems = {
+			011BF4F92B485CB000DD8B1D = 011BF4F92B485CB000DD8B1D;
 			013DAE6E2B3DF2FB0086DC50 = 013DAE6E2B3DF2FB0086DC50;
 			013DAE6F2B3DF2FB0086DC50 = 013DAE6F2B3DF2FB0086DC50;
 			013DAE742B3DF2FB0086DC50 = 013DAE742B3DF2FB0086DC50;
@@ -850,20 +807,14 @@
 			013DAE782B3DF2FB0086DC50 = 013DAE782B3DF2FB0086DC50;
 			013DAE7B2B3DF2FB0086DC50 = 013DAE7B2B3DF2FB0086DC50;
 			013DAE7C2B3DF2FB0086DC50 = 013DAE7C2B3DF2FB0086DC50;
-			0153E8CD2B47A29100248844 = 0153E8CD2B47A29100248844;
 			0153E8CE2B47A29100248844 = 0153E8CE2B47A29100248844;
-			0183B25D2B47A364009B98E8 = 0183B25D2B47A364009B98E8;
-			0183B2632B47A4EA009B98E8 = 0183B2632B47A4EA009B98E8;
-			0183B2642B47A4EA009B98E8 = 0183B2642B47A4EA009B98E8;
-			0183B2652B47A4EA009B98E8 = 0183B2652B47A4EA009B98E8;
-			0183B2662B47A4EA009B98E8 = 0183B2662B47A4EA009B98E8;
-			0183B2672B47A4EA009B98E8 = 0183B2672B47A4EA009B98E8;
-			0183B2682B47A4EA009B98E8 = 0183B2682B47A4EA009B98E8;
-			0183B26D2B47A4EA009B98E8 = 0183B26D2B47A4EA009B98E8;
 			018892942B42833700718BA7 = 018892942B42833700718BA7;
 			01C2630D2B2FF4BD00B4FF8D = 01C2630D2B2FF4BD00B4FF8D;
 			01C2630F2B2FF4BD00B4FF8D = 01C2630F2B2FF4BD00B4FF8D;
 			01C263B52B2FF6B000B4FF8D = 01C263B52B2FF6B000B4FF8D;
+			01E6143A2B49C504004F7B04 = 01E6143A2B49C504004F7B04;
+			01E6143D2B49C504004F7B04 = 01E6143D2B49C504004F7B04;
+			01ECCB242B49C0F60019304F = 01ECCB242B49C0F60019304F;
 		};
 		sourceControlManager = 018752362B2FF43F0050513D;
 		userBuildSettings = {

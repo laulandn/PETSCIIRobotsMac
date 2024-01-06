@@ -7,7 +7,11 @@
 
 #define PlatformClass PlatformSDL
 
+#ifdef _MAC
 #define PLATFORM_NAME "macintosh" 
+#else
+#define PLATFORM_NAME "sdl" 
+#endif
 #define PLATFORM_SCREEN_WIDTH 440 
 //#define PLATFORM_SCREEN_WIDTH 320
 #define PLATFORM_SCREEN_HEIGHT 224 
@@ -32,6 +36,11 @@
 
 
 #ifdef _MAC
+#ifdef TARGET_API_MAC_CARBON
+#ifndef TARGET_API_CARBON
+#define TARGET_API_CARBON 1
+#endif
+#endif
 #if TARGET_API_CARBON
 #include <Carbon/Carbon.h>
 #else

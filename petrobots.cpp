@@ -234,7 +234,11 @@ char INTRO_MESSAGE[] = "welcome to "
                        "-robots!\xff"
                        "by david murray 2021\xff"
                        PLATFORM_NAME
+#ifdef _MAC
                        " port by ???";
+#else
+                       " port by Vesa Halttunen";
+#endif
 char MSG_CANTMOVE[] = "can't move that!";
 char MSG_BLOCKED[] = "blocked!";
 char MSG_SEARCHING[] = "searching";

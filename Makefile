@@ -2,12 +2,12 @@
 CXXFLAGS :=-g -std=c++11 -fsigned-char 
 LDFLAGS :=
 
-CXXFLAGS += -D_LATITUDE_ -I../more_src/mycarbon/CIncludes
-LDFLAGS += -L../more_src/mycarbon -lmycarbon_static -L../more_src/nlib -lnlib_Static
-LDFLAGS += -L/opt/local/lib -lX11
+#CXXFLAGS += -D_LATITUDE_ -I../more_src/mycarbon/CIncludes
+#LDFLAGS += -L../more_src/mycarbon -lmycarbon_static -L../more_src/nlib -lnlib_Static
+#LDFLAGS += -L/opt/local/lib -lX11
 
-#CXXFLAGS += `pkg-config --cflags sdl2` `pkg-config --cflags SDL2_image`
-#LDFLAGS += `pkg-config --libs sdl2` `pkg-config --libs SDL2_image`
+CXXFLAGS += `pkg-config --cflags sdl2` `pkg-config --cflags SDL2_image`
+LDFLAGS += `pkg-config --libs sdl2` `pkg-config --libs SDL2_image`
 
 SOURCES := petrobots.cpp Platform.cpp PlatformSDL.cpp PT2.3A_replay_cia.cpp
 OBJECTS := $(SOURCES:.cpp=.o)

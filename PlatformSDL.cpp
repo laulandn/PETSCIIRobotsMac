@@ -287,10 +287,10 @@ void SDL_BlitSurface(GWorldPtr s,SDL_Rect *sr,GWorldPtr d,SDL_Rect *dr)
 #if TARGET_API_CARBON
   srcBits=GetPortBitMapForCopyBits(s);
   //srcBits=(BitMap *)*GetGWorldPixMap(s);
-  dstBits=GetPortBitMapForCopyBits(d);
+  //dstBits=GetPortBitMapForCopyBits(d);
   dstBits=(BitMap *)*GetGWorldPixMap(d);
-  GrafPtr p;
-  GetPort(&p);
+  //GrafPtr p;
+  //GetPort(&p);
   //dstBits=GetPortBitMapForCopyBits(p);
   SetGWorld(d,NULL);
 #else
@@ -343,9 +343,10 @@ void  SDL_FillRect(GWorldPtr s,SDL_Rect *sr,uint32_t v)
 #ifdef _MAC
 void  SDL_FillRects(GWorldPtr s,SDL_Rect *rs,uint32_t n,uint32_t v)
 {
-  fprintf(debugf,"SDL_FillRects...\n");
+  //fprintf(debugf,"SDL_FillRects...\n");
   if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
   if(!rs) { fprintf(debugf,"rs was NULL!\n"); return; }
+  // TODO
   /*
   for(unsigned int t=0;t<n;t++) {
     SDL_Rect *sr=&(rs[t]);
@@ -361,7 +362,7 @@ void  SDL_UpdateWindowSurface(WindowPtr w)
 {
   //fprintf(debugf,"SDL_UpdateWindowSurface...\n");
   if(!w) { fprintf(debugf,"w was NULL!\n"); return; }
-  // TODO
+  // TODO?
 }
 #endif
 
@@ -799,17 +800,30 @@ uint8_t PlatformSDL::readKeyboard()
   EventRecord event;
   int type,val;
 #if !TARGET_API_CARBON
-  SystemTask();
+  //SystemTask();
 #endif
   val=EventAvail(everyEvent,&event);
   if(val) {
 	GetNextEvent(everyEvent,&event);
     type=event.what;
     switch(type) {
+      case nullEvent: break;
 	  case keyDown:
 	  case keyUp:
-	    keyToReturn=event.message&0xff;
-		fprintf(debugf,"mac keypress '%c' (%d)\n",keyToReturn,keyToReturn);
+		if(event.modifiers&cmdKey) {
+          int mchoice=MenuKey(event.message&0xff);
+          fprintf(debugf,"mac menu '%c' mchoice=%d\n",event.message&0xff,mchoice);
+          if((event.message&0xff)=='q') {
+            fprintf(debugf,"Command-Q...quiting...\n");
+            ExitToShell();
+          }
+        }
+        else {
+	      keyToReturn=event.message&0xff;
+   		  fprintf(debugf,"mac keypress '%c' (%d)\n",keyToReturn,keyToReturn);
+        }
+	    break;
+	  case updateEvt:
 	    break;
 	  default:
 	    fprintf(debugf,"mac event.what=%d skipped!\n",type);
@@ -867,7 +881,9 @@ uint8_t PlatformSDL::readKeyboard()
 #endif
     uint8_t result = keyToReturn;
     keyToReturn = 0xff;
+#ifdef _MAC
 	if(result!=0xff) fprintf(debugf,"readKeyboard returning '%c' (%d)\n",result,result);
+#endif
     return result;
 }
 
