@@ -16,6 +16,8 @@ Supports m68k, PPC and Carbon.
 + Missing several important graphic functions.
 + No sound.
 
+Original SDL code is still present and works.  #define "_MAC" to build for Mac instead.
+
 Unfinished.  
 
 Mostly done as a proof-of-concept of how this would be a relatively simple project, even for beginning programmers.
