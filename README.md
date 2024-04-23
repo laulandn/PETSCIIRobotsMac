@@ -15,3 +15,9 @@ Supports m68k, PPC and Carbon.
 + Event handling works in menu, but not game.
 + Missing several important graphic functions.
 + No sound.
+
+Unfinished.  
+
+Mostly done as a proof-of-concept of how this would be a relatively simple project, even for beginning programmers.
+
+Feel free to contact me to help finish it, use this as a starting point for your own port, or see some extremely simple classic MacOS toolbox coding.
