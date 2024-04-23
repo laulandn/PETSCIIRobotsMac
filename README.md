@@ -22,4 +22,8 @@ Unfinished.
 
 Mostly done as a proof-of-concept of how this would be a relatively simple project, even for beginning programmers.
 
-Feel free to contact me to help finish it, use this as a starting point for your own port, or see some extremely simple classic MacOS toolbox coding.
+Prints debug info to stdout (or file) so you can see which of the new Mac functions are being called.  Function names have NOT been changed, so it will still say "SDL" even for the Mac version!
+
+Added some error checking that was missing in original.
+
+Feel free to contact me to help finish it, use this as a starting point for your own port, learn game coding, or simple use of the classic MacOS toolbox.
