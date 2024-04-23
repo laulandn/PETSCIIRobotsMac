@@ -5,12 +5,13 @@ The ongoing result of a challenge on MacintoshGarden:
 
 Based on SDL version from original author.
 
-Builds with CodeWarrior Pro 6 and 8.
-Builds with XCode 2.
++ Builds with CodeWarrior Pro 6 and 8.
++ Builds with XCode 2.
+
 Supports m68k, PPC and Carbon.
 
-Currently only supports 256 colors.
-Uses raw uncompressed art assets.
-Event handling works in menu, but not game.
-Missing several important graphic functions.
-No sound.
++ Currently only supports 256 colors.
++ Uses raw uncompressed art assets.
++ Event handling works in menu, but not game.
++ Missing several important graphic functions.
++ No sound.
