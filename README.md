@@ -15,7 +15,8 @@ Supports m68k, PPC and Carbon.
 + Event handling works in menu, but not game.
 + Missing several important graphic functions.
 + No sound.
-+ Uses 256 color art, but doesn't change (or support) palette from default!
++ Uses 256 color art, but doesn't change palette from default!
++ (There's no Mac code to handle palettes yet)
 
 Original SDL code is still present and works.  #define "_MAC" to build for Mac instead.
 
