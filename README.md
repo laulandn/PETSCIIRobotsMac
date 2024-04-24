@@ -13,6 +13,7 @@ Supports m68k, PPC and Carbon.
 + Currently only supports 256 colors.
 + Uses raw uncompressed art assets.
 + Event handling works in menu, but not game.
++ (Keyboard repeat or something else not handled correctly maybe?)
 + Missing several important graphic functions.
 + No sound.
 + Uses 256 color art, but doesn't change palette from default!
