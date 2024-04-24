@@ -19,7 +19,7 @@ Supports m68k, PPC and Carbon.
 + Missing several important graphic functions.
 + No sound.
 + Uses 256 color art, but doesn't change palette from default!
-+ (There's no Mac code to handle palettes yet and my bespoke raw format doesn't include)
++ (There's no Mac code to handle palettes yet and my bespoke raw format doesn't include them!)
 
 Original SDL code is still present and works.  #define "_MAC" to build for Mac instead.
 
@@ -29,7 +29,7 @@ Prints debug info to stdout (or file) so you can see which of the new Mac functi
 
 Added some error checking that was missing in original.
 
-Big-endian only due to my really brain dumb "raw" asset format storing ints that way, and the image reader function being also dumb...but there is a single "#ifdef 0" you can change if trying to build on little-endian.  (Not fully tested but will build an Intel Carbon app using XCode on Intel hardware)
+Big-endian only due to my really brain dumb "raw" asset format storing ints that way, and the image reader function being also dumb...but there is a single "#ifdef 0" you can change if trying to build on little-endian.  (Not really tested, but will build a working Intel Carbon app using XCode on Intel hardware)
 
 NOTE: There are a lot of duplicate asset files, but you need to run the app with them in the same folder.  It could be cleaned up a LOT.
 
