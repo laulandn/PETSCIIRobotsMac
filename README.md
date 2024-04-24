@@ -15,6 +15,7 @@ Supports m68k, PPC and Carbon.
 + Event handling works in menu, but not game.
 + Missing several important graphic functions.
 + No sound.
++ Uses 256 color art, but doesn't change (or support) palette from default!
 
 Original SDL code is still present and works.  #define "_MAC" to build for Mac instead.
 
@@ -25,5 +26,7 @@ Mostly done as a proof-of-concept of how this would be a relatively simple proje
 Prints debug info to stdout (or file) so you can see which of the new Mac functions are being called.  Function names have NOT been changed, so it will still say "SDL" even for the Mac version!
 
 Added some error checking that was missing in original.
+
+NOTE: There are a lot of duplicate asset files, but you need to run the app with them in the same folder.  It could be cleaned up a LOT.
 
 Feel free to contact me to help finish it, use this as a starting point for your own port, learn game coding, or simple use of the classic MacOS toolbox.
