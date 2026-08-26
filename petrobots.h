@@ -104,7 +104,7 @@ extern uint8_t PLASMA_ACT; // 0=No plasma fire active 1=plasma fire active
 extern uint8_t RANDOM; // used for random number generation
 extern uint8_t BORDER; // Used for border flash timing
 extern uint8_t SCREEN_SHAKE; // 1=shake 0=no shake
-extern uint8_t CONTROL; // 0=keyboard 1=custom keys 2=snes
+extern uint8_t CONTROL1; // 0=keyboard 1=custom keys 2=snes
 extern uint16_t BORDER_COLOR; // Used for border flash coloring
 extern char INTRO_MESSAGE[];
 extern char MSG_CANTMOVE[];

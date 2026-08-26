@@ -16,7 +16,6 @@
 #define PLATFORM_DEFAULT_CONTROL 0
 #endif
 
-/*
 #if __cplusplus < 201103L && !defined(_WIN32)
 typedef char int8_t;
 typedef short int16_t;
@@ -36,9 +35,8 @@ typedef unsigned char bool;
 #define INT8_MAX 0x7f
 #define INT8_MIN 0x80
 #else
-*/
-#include <stdint.h>
-//#endif
+#include <cstdint>
+#endif
 
 typedef uint32_t address_t;
 

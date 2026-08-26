@@ -1,0 +1,36 @@
+
+CC=powerpc-apple-macos-gcc
+#CC=m68k-apple-macos-gcc
+CXX=powerpc-apple-macos-g++
+#CXX=m68k-apple-macos-g++
+
+CXXFLAGS :=-g -std=c++11 -fpermissive -fsigned-char -DPLATFORM_NAME=\"sdl\" -DPLATFORM_SCREEN_WIDTH=440 -DPLATFORM_SCREEN_HEIGHT=224 -DPLATFORM_MAP_WINDOW_TILES_WIDTH=16 -DPLATFORM_MAP_WINDOW_TILES_HEIGHT=8 -DPLATFORM_INTRO_OPTIONS=3 -DPLATFORM_DEFAULT_CONTROL=3 -DPLATFORM_MODULE_BASED_AUDIO -DPLATFORM_TILE_BASED_RENDERING -DPLATFORM_IMAGE_BASED_TILES -DPLATFORM_IMAGE_SUPPORT -DPLATFORM_SPRITE_SUPPORT -DPLATFORM_COLOR_SUPPORT -DPLATFORM_CURSOR_SUPPORT -DPLATFORM_CURSOR_SHAPE_SUPPORT -DPLATFORM_FADE_SUPPORT -DPLATFORM_LIVE_MAP_SUPPORT -DOPTIMIZED_MAP_RENDERING -I$(HOME)/Retro68-build/toolchain/powerpc-apple-macos/include/SDL2
+LDFLAGS := SDL_main.o -I$(HOME)/Retro68-build/toolchain/powerpc-apple-macos/lib/SDL2 -lSDL2main -lSDL2_image -lSDL2 -lThreadsLib -lInputSprocketLib -lDrawSprocketLib -lOpenGLLibrary
+#LDFLAGS := -L$(HOME)/more_src/mysdl -lSDL2
+#LDFLAGS := SDL_main68k.o -lSDL2main -lSDL2_image -lSDL2 $(HOME)/sdl2macos9/dummy_atomic/atomic_dummy.o
+
+#CXXFLAGS += `pkg-config --cflags sdl2`
+#CXXFLAGS += `pkg-config --cflags SDL2_image`
+#LDFLAGS += `pkg-config --libs sdl2`
+#LDFLAGS += `pkg-config --libs SDL2_image`
+
+SOURCES := petrobots.cpp Platform.cpp PlatformSDL.cpp PT2.3A_replay_cia.cpp
+OBJECTS := $(SOURCES:.cpp=.o)
+TARGET := petrobots
+
+all: $(TARGET) setup
+
+.cpp.o:
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+
+$(TARGET): $(OBJECTS)
+#	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o petrobots $(OBJECTS) $(LDFLAGS)
+	$(HOME)/sdl2macos9/xcoff2app.sh petrobots
+
+setup:
+	SDL/setup.sh
+
+clean:
+	rm -f $(OBJECTS) $(TARGET)

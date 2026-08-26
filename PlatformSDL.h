@@ -1,65 +1,11 @@
 #ifndef _PLATFORMSDL_H
 #define _PLATFORMSDL_H
 
-
-#define _MAC
-
-
 #define PlatformClass PlatformSDL
 
-#ifdef _MAC
-#define PLATFORM_NAME "macintosh" 
-#else
-#define PLATFORM_NAME "sdl" 
-#endif
-#define PLATFORM_SCREEN_WIDTH 440 
-//#define PLATFORM_SCREEN_WIDTH 320
-#define PLATFORM_SCREEN_HEIGHT 224 
-//#define PLATFORM_SCREEN_HEIGHT 200
-#define PLATFORM_MAP_WINDOW_TILES_WIDTH 16 
-#define PLATFORM_MAP_WINDOW_TILES_HEIGHT 8 
-//#define PLATFORM_INTRO_OPTIONS 3
-//#define PLATFORM_DEFAULT_CONTROL 3 
-#define PLATFORM_MODULE_BASED_AUDIO 
-#define PLATFORM_TILE_BASED_RENDERING 
-#define PLATFORM_IMAGE_BASED_TILES 
-#define PLATFORM_IMAGE_SUPPORT 
-#define PLATFORM_SPRITE_SUPPORT 
-#define PLATFORM_COLOR_SUPPORT 
-#define PLATFORM_CURSOR_SUPPORT 
-#define PLATFORM_CURSOR_SHAPE_SUPPORT 
-#define PLATFORM_FADE_SUPPORT 
-
-
-#include <stdio.h>
-#include <stdlib.h>
-
-
-#ifdef _MAC
-#ifdef TARGET_API_MAC_CARBON
-#ifndef TARGET_API_CARBON
-#define TARGET_API_CARBON 1
-#endif
-#endif
-#if TARGET_API_CARBON
-#include <Carbon/Carbon.h>
-#else
-#include <Quickdraw.h>
-#include <QDOffscreen.h>
-#include <MacWindows.h>
-#endif
-#define SDL_Surface void
-struct SDL_Rect { int x,y,w,h; };
-struct SDL_Color { int r,g,b,i; };
-struct SDL_Palette { SDL_Color *colors; };
-#else
 #include <SDL.h>
 #include <SDL_image.h>
-#endif
-
-
 #include "Platform.h"
-
 
 class PlatformSDL : public Platform {
 public:
@@ -141,42 +87,8 @@ private:
 #endif
     static void audioCallback(void* data, uint8_t* stream, int bytes);
     void (*interrupt)(void);
-#ifdef _MAC
-#else
     SDL_AudioSpec audioSpec;
     SDL_AudioDeviceID audioDeviceID;
-#endif
-#ifdef _MAC
-    WindowPtr window;
-    GWorldPtr windowSurface;
-    GWorldPtr bufferSurface;
-    GWorldPtr fadeSurface;
-    GWorldPtr fontSurface;
-#ifdef PLATFORM_IMAGE_BASED_TILES
-    GWorldPtr tileSurface;
-#else
-    GWorldPtr tileSurfaces[256];
-#endif // PLATFORM_IMAGE_BASED_TILES
-#ifdef PLATFORM_IMAGE_SUPPORT
-    GWorldPtr imageSurfaces[3];
-    GWorldPtr itemsSurface;
-    GWorldPtr keysSurface;
-    GWorldPtr healthSurface;
-    GWorldPtr facesSurface;
-    GWorldPtr animTilesSurface;
-    SDL_Palette* palette;
-#ifdef PLATFORM_SPRITE_SUPPORT
-    GWorldPtr spritesSurface;
-#endif // PLATFORM_SPRITE_SUPPORT
-#endif // PLATFORM_IMAGE_SUPPORT
-#ifdef PLATFORM_CURSOR_SUPPORT
-    GWorldPtr cursorSurface;
-    SDL_Rect cursorRect;
-#ifdef PLATFORM_CURSOR_SHAPE_SUPPORT
-    CursorShape cursorShape;
-#endif // PLATFORM_CURSOR_SHAPE_SUPPORT
-#endif // PLATFORM_CURSOR_SUPPORT
-#else
     SDL_Joystick* joystick;
     SDL_Window* window;
     SDL_Surface* windowSurface;
@@ -187,7 +99,7 @@ private:
     SDL_Surface* tileSurface;
 #else
     SDL_Surface* tileSurfaces[256];
-#endif // PLATFORM_IMAGE_BASED_TILES
+#endif
 #ifdef PLATFORM_IMAGE_SUPPORT
     SDL_Surface* imageSurfaces[3];
     SDL_Surface* itemsSurface;
@@ -198,16 +110,15 @@ private:
     SDL_Palette* palette;
 #ifdef PLATFORM_SPRITE_SUPPORT
     SDL_Surface* spritesSurface;
-#endif // PLATFORM_SPRITE_SUPPORT
-#endif // PLATFORM_IMAGE_SUPPORT
+#endif
+#endif
 #ifdef PLATFORM_CURSOR_SUPPORT
     SDL_Surface* cursorSurface;
     SDL_Rect cursorRect;
 #ifdef PLATFORM_CURSOR_SHAPE_SUPPORT
     CursorShape cursorShape;
-#endif // PLATFORM_CURSOR_SHAPE_SUPPORT
-#endif // PLATFORM_CURSOR_SUPPORT
-#endif // _MAC
+#endif
+#endif
     int framesPerSecond_;
 #ifdef PLATFORM_MODULE_BASED_AUDIO
     uint8_t* moduleData;

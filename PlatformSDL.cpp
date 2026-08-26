@@ -50,15 +50,9 @@ static int8_t animTileMap[256] = {
 static char MAPNAME[] = "level-a";
 #ifdef PLATFORM_IMAGE_SUPPORT
 static const char* imageFilenames[] = {
-#ifdef _MAC
-    "introscreen.raw",
-    "gamescreen.raw",
-    "gameover.raw"
-#else
     "introscreen.png",
     "gamescreen.png",
     "gameover.png"
-#endif
 };
 #endif
 #ifdef PLATFORM_MODULE_BASED_AUDIO
@@ -93,34 +87,6 @@ static const char* sampleFilenames[] = {
 #endif
 
 static uint8_t standardControls[] = {
-#ifdef _MAC
-    'i', // MOVE UP orig: 56 (8)
-    'k', // MOVE DOWN orig: 50 (2)
-    'j', // MOVE LEFT orig: 52 (4)
-    'l', // MOVE RIGHT orig: 54 (6)
-    'w', // FIRE UP
-    's', // FIRE DOWN
-    'a', // FIRE LEFT
-    'd', // FIRE RIGHT
-    '1', // CYCLE WEAPONS
-    '2', // CYCLE ITEMS
-    ' ', // USE ITEM
-    'z', // SEARCH OBJECT
-    'm', // MOVE OBJECT
-    '3', // LIVE MAP
-    '4' + 0x80, // LIVE MAP ROBOTS
-    '5', // PAUSE
-    '6', // MUSIC
-    'c' + 0x80, // CHEAT
-    30, // CURSOR UP
-    31, // CURSOR DOWN
-    28, // CURSOR LEFT
-    29, // CURSOR RIGHT
-    ' ', // SPACE
-    13, // RETURN
-    'y', // YES
-    'n' // NO
-#else
     SDL_SCANCODE_I, // MOVE UP orig: 56 (8)
     SDL_SCANCODE_K, // MOVE DOWN orig: 50 (2)
     SDL_SCANCODE_J, // MOVE LEFT orig: 52 (4)
@@ -147,7 +113,6 @@ static uint8_t standardControls[] = {
     SDL_SCANCODE_RETURN, // RETURN
     SDL_SCANCODE_Y, // YES
     SDL_SCANCODE_N // NO
-#endif
 };
 
 #define LIVE_MAP_ORIGIN_X ((PLATFORM_SCREEN_WIDTH - 56 - 128 * 3) / 2)
@@ -177,210 +142,11 @@ static uint16_t joystickButtons[] = {
     0 // 16
 };
 
-
-////////
-
-
-#ifdef _MAC
-FILE *debugf;
-#endif
-
-
-#ifdef _MAC
-GWorldPtr SDL_CreateRGBSurface(uint32_t flags,uint32_t w,uint32_t h,uint32_t d,uint32_t rm,uint32_t gm,uint32_t bm,uint32_t am)
-{
-  fprintf(debugf,"SDL_CreateRGBSurface...\n");
-  GWorldPtr gw;
-  Rect r;  r.left=0; r.top=0;
-  r.bottom=h; r.right=w;
-  fprintf(debugf,"r is %d %d %d %d\n",r.left,r.top,r.right,r.bottom);
-  QDErr err=NewGWorld(&gw,8,&r,NULL,NULL,0);
-  if(err!=noErr) {
-    fprintf(debugf,"QDErr was %d!\n",err);
-	return NULL;
-  }
-  fprintf(debugf,"new gworld at %lx\n",(long)gw);
-  return gw;
-}
-#endif
-
-
-#ifdef _MAC
-void SDL_FreeSurface(GWorldPtr s)
-{
-  fprintf(debugf,"SDL_FreeSurface...\n");
-  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
-  DisposeGWorld(s);
-}
-#endif
-
-
-#ifdef _MAC
-GWorldPtr IMG_Load(const char *n)
-{
-  fprintf(debugf,"IMG_Load...\n");
-  if(!n) { fprintf(debugf,"n was NULL!\n"); return NULL; }
-  FILE *f=fopen(n,"rb");
-  if(!f) { fprintf(debugf,"Couldn't open %s!\n",n); return NULL; }
-  uint32_t w,h,d,np;
-  fread(&w,sizeof(uint32_t),1,f);
-  fread(&h,sizeof(uint32_t),1,f);
-  fread(&d,sizeof(uint32_t),1,f);
-  fread(&np,sizeof(uint32_t),1,f);
-#if 0
-  w=ntohl(w); h=ntohl(h); d=ntohl(d); np=ntohl(np); 
-#endif
-  fprintf(debugf,"Image %s is %dx%dx%d(%d)\n",n,w,h,d,np);
-  if((!d)||(d>32)) { fprintf(debugf,"Bad d %d!\n",d); return NULL; }
-  if((!np)||(np>32)) { fprintf(debugf,"Bad np %d!\n",np); return NULL; }
-  if((!w)||(w>1024)) { fprintf(debugf,"Bad w %d!\n",w); return NULL; }
-  if((!h)||(h>10240)) { fprintf(debugf,"Bad h %d!\n",h); return NULL; }
-  GWorldPtr s=SDL_CreateRGBSurface(0,w,h,d,0,0,0,0);
-  if(!s) { fprintf(debugf,"s was NULL!\n"); return NULL; }
-  //
-  PixMapHandle pm=GetGWorldPixMap(s);
-  if(!pm) { fprintf(debugf,"pm was NULL!\n"); return NULL; }
-  LockPixels(pm);
-  //
-  unsigned int bpl=0;
-#if TARGET_API_CARBON
-  bpl=GetPixRowBytes(pm);
-#else
-  bpl=(*pm)->rowBytes&0x3fff;
-#endif
-  char *dst=GetPixBaseAddr(pm);
-  fprintf(debugf,"bpl=%d\n",bpl);
-  char c;
-  unsigned int off=0;
-  unsigned int sbpl=w;
-  for(unsigned int r=0;r<h;r++) {
-    for(unsigned int b=0;b<sbpl;b++) {
-	  fread(&c,1,1,f);
-	  dst[off+b]=c;
-	}
-	off+=bpl;
-  }
-  //
-  UnlockPixels(pm);
-  return s;
-}
-#endif
-
-
-#ifdef _MAC
-void SDL_BlitSurface(GWorldPtr s,SDL_Rect *sr,GWorldPtr d,SDL_Rect *dr)
-{
-  //fprintf(debugf,"SDL_BlitSurface...\n");
-  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
-  if(!sr) { fprintf(debugf,"sr was NULL!\n"); return; }
-  if(!d) { fprintf(debugf,"d was NULL!\n"); return; }
-  if(!dr) { fprintf(debugf,"dr was NULL!\n"); return; }
-  //fprintf(debugf,"s at %lx\n",(long)s); fprintf(debugf,"d at %lx\n",(long)d);
-  Rect msr;  msr.top=sr->y; msr.left=sr->x; 
-  msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
-  Rect mdr;  mdr.top=dr->y; mdr.left=dr->x; 
-  mdr.bottom=dr->y+dr->h;  mdr.right=dr->x+dr->w;
-  //fprintf(debugf,"msr is %d %d %d %d\n",msr.left,msr.top,msr.right,msr.bottom);
-  //fprintf(debugf,"mdr is %d %d %d %d\n",mdr.left,mdr.top,mdr.right,mdr.bottom);
-  const BitMap *srcBits=NULL;  
-  const BitMap *dstBits=NULL;
-#if TARGET_API_CARBON
-  srcBits=GetPortBitMapForCopyBits(s);
-  //srcBits=(BitMap *)*GetGWorldPixMap(s);
-  //dstBits=GetPortBitMapForCopyBits(d);
-  dstBits=(BitMap *)*GetGWorldPixMap(d);
-  //GrafPtr p;
-  //GetPort(&p);
-  //dstBits=GetPortBitMapForCopyBits(p);
-  SetGWorld(d,NULL);
-#else
-  srcBits=(BitMap *)&((GrafPtr)s)->portBits;
-  dstBits=(BitMap *)&((GrafPtr)d)->portBits;
-#endif
-  //
-  CopyBits(srcBits,dstBits,&msr,&mdr,srcCopy,NULL);
-}
-#endif
-
-
-#ifdef _MAC
-void SDL_BlitScaled(GWorldPtr s,SDL_Rect *sr,GWorldPtr d,SDL_Rect *dr)
-{
-  //fprintf(debugf,"SDL_BlitScaled...\n");
-  SDL_BlitSurface(s,sr,d,dr);
-}
-#endif
-
-
-#ifdef _MAC
-void SDL_SetClipRect(GWorldPtr s,SDL_Rect *sr)
-{
-  fprintf(debugf,"SDL_SetClipRect...\n");
-  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
-  if(!sr) { fprintf(debugf,"sr was NULL!\n"); return; }
-  Rect msr;  msr.top=sr->y; msr.left=sr->x; 
-  msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
-  fprintf(debugf,"msr is %d %d %d %d\n",msr.left,msr.top,msr.right,msr.bottom);
-  // TODO
-}
-#endif
-
-
-#ifdef _MAC
-void  SDL_FillRect(GWorldPtr s,SDL_Rect *sr,uint32_t v)
-{
-  fprintf(debugf,"SDL_FillRect...\n");
-  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
-  if(!sr) { fprintf(debugf,"sr was NULL!\n"); return; }
-  Rect msr;  msr.top=sr->y; msr.left=sr->x; 
-  msr.bottom=sr->y+sr->h;  msr.right=sr->x+sr->w;
-  fprintf(debugf,"msr is %d %d %d %d\n",msr.left,msr.top,msr.right,msr.bottom);
-  // TODO
-}
-#endif
-
-
-#ifdef _MAC
-void  SDL_FillRects(GWorldPtr s,SDL_Rect *rs,uint32_t n,uint32_t v)
-{
-  //fprintf(debugf,"SDL_FillRects...\n");
-  if(!s) { fprintf(debugf,"s was NULL!\n"); return; }
-  if(!rs) { fprintf(debugf,"rs was NULL!\n"); return; }
-  // TODO
-  /*
-  for(unsigned int t=0;t<n;t++) {
-    SDL_Rect *sr=&(rs[t]);
-    SDL_FillRect(s,sr,v);
-  }
-  */
-}
-#endif
-
-
-#ifdef _MAC
-void  SDL_UpdateWindowSurface(WindowPtr w)
-{
-  //fprintf(debugf,"SDL_UpdateWindowSurface...\n");
-  if(!w) { fprintf(debugf,"w was NULL!\n"); return; }
-  // TODO?
-}
-#endif
-
-
-////////
-
-
 PlatformSDL::PlatformSDL() :
     interrupt(0),
-#ifdef _MAC
-#else
     audioSpec({0}),
     audioDeviceID(0),
-#endif
-#ifdef _MAC
-#else
     joystick(0),
-#endif
     window(0),
     windowSurface(0),
     bufferSurface(0),
@@ -403,7 +169,7 @@ PlatformSDL::PlatformSDL() :
 #endif
 #ifdef PLATFORM_CURSOR_SUPPORT
     cursorSurface(0),
-    //cursorRect({0}),
+    cursorRect({0}),
 #ifdef PLATFORM_CURSOR_SHAPE_SUPPORT
     cursorShape(ShapeUse),
 #endif
@@ -433,23 +199,6 @@ PlatformSDL::PlatformSDL() :
     downKey(0xff),
     shift(0)
 {
-#ifdef _MAC
-#if !TARGET_API_CARBON
-  //MaxApplZone();
-  //InitGraf(&(qd.thePort));
-#endif
-  FlushEvents(everyEvent,0);
-#if !TARGET_API_CARBON
-  //InitWindows();
-  //InitMenus();
-  //InitDialogs(NULL);
-  InitCursor();
-#endif
-  //debugf=fopen("debug.txt","wb");
-  debugf=stdout;
-  if(!debugf) { fprintf(debugf,"Couldn't open debug.txt!\n"); exit(5); }
-  fprintf(debugf,"Starting...\n");
-#else
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
     }
@@ -458,17 +207,14 @@ PlatformSDL::PlatformSDL() :
     }
 
     SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
-#endif
 
-#ifdef _MAC
-#else
     SDL_AudioSpec requestedAudioSpec;
     SDL_zero(requestedAudioSpec);
     requestedAudioSpec.freq = 44100;
     requestedAudioSpec.format = AUDIO_S16LSB;
     requestedAudioSpec.channels = 1;
     requestedAudioSpec.samples = 512;
-    requestedAudioSpec.callback = audioCallback;
+    requestedAudioSpec.callback = (SDL_AudioCallback)audioCallback;
     requestedAudioSpec.userdata = this;
     audioDeviceID = SDL_OpenAudioDevice(NULL, 0, &requestedAudioSpec, &audioSpec, SDL_AUDIO_ALLOW_ANY_CHANGE);
     if (!audioDeviceID) {
@@ -478,118 +224,54 @@ PlatformSDL::PlatformSDL() :
     interruptIntervalInSamples = audioSpec.freq / framesPerSecond_;
     samplesSinceInterrupt = interruptIntervalInSamples;
     SDL_PauseAudioDevice(audioDeviceID, 0);
-#endif
 
-#ifdef _MAC
-#else
     joystick = SDL_JoystickOpen(0);
-#endif
 
-#ifdef _MAC
-  fprintf(debugf,"Going to NewCWindow...\n");
-  Rect WindowBox;
-  WindowBox.top=40;  WindowBox.left=4;
-  WindowBox.bottom=PLATFORM_SCREEN_HEIGHT+40;  WindowBox.right=PLATFORM_SCREEN_WIDTH+4;
-  window=NewCWindow(NULL,&WindowBox,(ConstStr255Param)"\pAttack of the PETSCII Robots",true,noGrowDocProc+8,(WindowPtr)(-1L),true,0L);
-  SetPort((GrafPtr)window);
-#ifdef __MWERKS__
-  windowSurface=(CGrafPtr)window;
-#else
-  windowSurface=GetWindowPort(window);
-#endif
-  ShowWindow((WindowPtr)window);
-  fprintf(debugf,"(Window done)\n");
-#else
     window = SDL_CreateWindow("Attack of the PETSCII Robots", 0, 0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 0);
     windowSurface = SDL_GetWindowSurface(window);
-#endif
-
     bufferSurface = SDL_CreateRGBSurface(0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-#ifdef _MAC
-    if(!bufferSurface) { fprintf(debugf,"Didn't get bufferSurface!\n"); exit(5); }
-#endif
     fadeSurface = SDL_CreateRGBSurface(0, 1, 1, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-#ifdef _MAC
-    if(!fadeSurface) { fprintf(debugf,"Didn't get fadeSurface!\n"); exit(5); }
-#endif
-#ifdef _MAC
-#ifdef PLATFORM_COLOR_SUPPORT
-    fontSurface = IMG_Load("c64font.raw");
-#else
-    fontSurface = IMG_Load("petfont.raw");
-#endif // PLATFORM_COLOR_SUPPORT
-    if(!fontSurface) { fprintf(debugf,"Didn't get fontSurface!\n"); exit(5); }
-#ifdef PLATFORM_IMAGE_BASED_TILES
-    tileSurface = IMG_Load("tilesalpha.raw");
-    if(!tileSurface) { fprintf(debugf,"Didn't get tileSurface!\n"); exit(5); }
-#else
-    for (int i = 0; i < 256; i++) {
-        tileSurfaces[i] = SDL_CreateRGBSurface(0, 24, 24, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-    }
-#endif // PLATFORM_IMAGE_BASED_TILES
-#else
 #ifdef PLATFORM_COLOR_SUPPORT
     fontSurface = IMG_Load("c64font.png");
 #else
     fontSurface = IMG_Load("petfont.png");
-#endif // PLATFORM_COLOR_SUPPORT
+#endif
+    if(!fontSurface) exit(0);
 #ifdef PLATFORM_IMAGE_BASED_TILES
     tileSurface = IMG_Load("tilesalpha.png");
+    if(!tileSurface) exit(0);
 #else
     for (int i = 0; i < 256; i++) {
         tileSurfaces[i] = SDL_CreateRGBSurface(0, 24, 24, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+        if(!tileSurfaces[i]) exit(0);
     }
-#endif // PLATFORM_IMAGE_BASED_TILES
-#endif  // _MAC
-#ifdef _MAC
+#endif
 #ifdef PLATFORM_IMAGE_SUPPORT
     for (int i = 0; i < 3; i++) {
         imageSurfaces[i] = IMG_Load(imageFilenames[i]);
-    }
-    itemsSurface = IMG_Load("items.raw");
-    if(!itemsSurface) { fprintf(debugf,"Didn't get itemsSurface!\n"); exit(5); }
-    keysSurface = IMG_Load("keys.raw");
-    if(!keysSurface) { fprintf(debugf,"Didn't get keysSurface!\n"); exit(5); }
-    healthSurface = IMG_Load("health.raw");
-    if(!healthSurface) { fprintf(debugf,"Didn't get healthSurface!\n"); exit(5); }
-    facesSurface = IMG_Load("faces.raw");
-    if(!facesSurface) { fprintf(debugf,"Didn't get facesSurface!\n"); exit(5); }
-    animTilesSurface = IMG_Load("animtiles.raw");
-    if(!animTilesSurface) { fprintf(debugf,"Didn't get animTilesSurface!\n"); exit(5); }
-#ifdef PLATFORM_SPRITE_SUPPORT
-    spritesSurface = IMG_Load("spritesalpha.raw");
-    if(!spritesSurface) { fprintf(debugf,"Didn't get spritesSurface!\n"); exit(5); }
-#else
-    SDL_SetColorKey(spritesSurface, SDL_TRUE, 16);
-#endif // PLATFORM_SPRITE_SUPPORT
-#endif // PLATFORM_IMAGE_SUPPORT
-#else
-#ifdef PLATFORM_IMAGE_SUPPORT
-    for (int i = 0; i < 3; i++) {
-        imageSurfaces[i] = IMG_Load(imageFilenames[i]);
+        if(!imageSurfaces[i]) exit(0);
     }
     itemsSurface = IMG_Load("items.png");
+    if(!itemsSurface) exit(0);
     keysSurface = IMG_Load("keys.png");
+    if(!keysSurface) exit(0);
     healthSurface = IMG_Load("health.png");
+    if(!healthSurface) exit(0);
     facesSurface = IMG_Load("faces.png");
+    if(!facesSurface) exit(0);
     animTilesSurface = IMG_Load("animtiles.png");
+    if(!animTilesSurface) exit(0);
 #ifdef PLATFORM_SPRITE_SUPPORT
     spritesSurface = IMG_Load("spritesalpha.png");
-#else
+    if(!spritesSurface) exit(0);
     SDL_SetColorKey(spritesSurface, SDL_TRUE, 16);
-#endif // PLATFORM_SPRITE_SUPPORT
-#endif // PLATFORM_IMAGE_SUPPORT
-#endif // _MAC
-#ifdef PLATFORM_CURSOR_SUPPORT
-    cursorSurface = SDL_CreateRGBSurface(0, 28, 28, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-#ifdef _MAC
-    if(!cursorSurface) { fprintf(debugf,"Didn't get cursorSurface!\n"); exit(5); }
-#endif // _MAC
-#endif // PLATFORM_CURSOR_SUPPORT
-#ifdef _MAC
-#else
-    SDL_SetSurfaceBlendMode(fontSurface, SDL_BLENDMODE_NONE);
 #endif
+#endif
+#ifdef PLATFORM_CURSOR_SUPPORT
+    cursorSurface = SDL_CreateRGBSurface(0, 28, 28, 32, 0x000000ff, 0x0000ff00,  0x00ff0000, 0xff000000);
+    if(!cursorSurface) exit(0);
+#endif
+    SDL_SetSurfaceBlendMode(fontSurface, SDL_BLENDMODE_NONE);
 #ifdef PLATFORM_MODULE_BASED_AUDIO
     int sample = 0;
     int8_t* destination = sampleData;
@@ -672,15 +354,10 @@ PlatformSDL::~PlatformSDL()
     SDL_FreeSurface(fadeSurface);
     SDL_FreeSurface(bufferSurface);
     SDL_FreeSurface(fontSurface);
-#ifdef _MAC
-    //CloseWindow(window);
-    if(debugf) fclose(debugf);
-#else
     SDL_DestroyWindow(window);
     SDL_JoystickClose(joystick);
     SDL_CloseAudioDevice(audioDeviceID);
     SDL_Quit();
-#endif
 #ifdef PLATFORM_MODULE_BASED_AUDIO
     delete[] sampleData;
     delete[] moduleData;
@@ -688,8 +365,6 @@ PlatformSDL::~PlatformSDL()
 }
 
 void PlatformSDL::audioCallback(void* data, uint8_t* stream, int bytes) {
-#ifdef _MAC
-#else
     PlatformSDL* platform = (PlatformSDL*)data;
     int words = bytes >> 1;
     int16_t* output = (int16_t*)stream;
@@ -708,7 +383,6 @@ void PlatformSDL::audioCallback(void* data, uint8_t* stream, int bytes) {
         }
         platform->samplesSinceInterrupt -= platform->interruptIntervalInSamples;
     }
-#endif
 }
 
 
@@ -796,41 +470,6 @@ void PlatformSDL::chrout(uint8_t character)
 
 uint8_t PlatformSDL::readKeyboard()
 {
-#ifdef _MAC
-  EventRecord event;
-  int type,val;
-#if !TARGET_API_CARBON
-  //SystemTask();
-#endif
-  val=EventAvail(everyEvent,&event);
-  if(val) {
-	GetNextEvent(everyEvent,&event);
-    type=event.what;
-    switch(type) {
-      case nullEvent: break;
-	  case keyDown:
-	  case keyUp:
-		if(event.modifiers&cmdKey) {
-          int mchoice=MenuKey(event.message&0xff);
-          fprintf(debugf,"mac menu '%c' mchoice=%d\n",event.message&0xff,mchoice);
-          if((event.message&0xff)=='q') {
-            fprintf(debugf,"Command-Q...quiting...\n");
-            ExitToShell();
-          }
-        }
-        else {
-	      keyToReturn=event.message&0xff;
-   		  fprintf(debugf,"mac keypress '%c' (%d)\n",keyToReturn,keyToReturn);
-        }
-	    break;
-	  case updateEvt:
-	    break;
-	  default:
-	    fprintf(debugf,"mac event.what=%d skipped!\n",type);
-	    break;
-	}
-  }
-#else
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -878,12 +517,8 @@ uint8_t PlatformSDL::readKeyboard()
         }
     }
 
-#endif
     uint8_t result = keyToReturn;
     keyToReturn = 0xff;
-#ifdef _MAC
-	if(result!=0xff) fprintf(debugf,"readKeyboard returning '%c' (%d)\n",result,result);
-#endif
     return result;
 }
 
@@ -895,11 +530,8 @@ void PlatformSDL::keyRepeat()
 
 void PlatformSDL::clearKeyBuffer()
 {
-#ifdef _MAC
-#else
     SDL_Event event;
     while (SDL_PollEvent(&event));
-#endif
     keyToReturn = 0xff;
     downKey = 0xff;
     pendingState = 0;
@@ -913,9 +545,6 @@ bool PlatformSDL::isKeyOrJoystickPressed(bool gamepad)
 
 uint16_t PlatformSDL::readJoystick(bool gamepad)
 {
-#ifdef _MAC
-    return 0;
-#else
     uint16_t state = 0;
     int16_t leftStickX = SDL_JoystickGetAxis(joystick, 0);
     int16_t leftStickY = SDL_JoystickGetAxis(joystick, 1);
@@ -960,7 +589,6 @@ uint16_t PlatformSDL::readJoystick(bool gamepad)
     uint16_t result = joystickStateToReturn;
     joystickStateToReturn = 0;
     return result;
-#endif
 }
 
 uint32_t PlatformSDL::load(const char* filename, uint8_t* destination, uint32_t size)
@@ -997,10 +625,12 @@ void PlatformSDL::displayImage(Image image)
     SDL_Rect clearRect = { 0, 0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT };
     SDL_FillRect(bufferSurface, &clearRect, 0xff000000);
 
+	    fprintf(stderr,"displayImage...\n"); fflush(stderr);
+
     if (image == ImageGame) {
-#ifdef _MAC
-	    fprintf(debugf,"displayImage image==ImageGame\n");
-#endif
+//#ifdef _MAC
+	    fprintf(stderr,"displayImage image==ImageGame\n"); fflush(stderr);
+//#endif
         SDL_Rect sourceRect = { 320 - 56, 0, 56, 128 };
         SDL_Rect destinationRect = { PLATFORM_SCREEN_WIDTH - 56, 0, 56, 128 };
         SDL_BlitSurface(imageSurfaces[image], &sourceRect, bufferSurface, &destinationRect);
@@ -1039,8 +669,6 @@ void PlatformSDL::displayImage(Image image)
         SDL_BlitSurface(imageSurfaces[image], &rect, bufferSurface, &rect);
     }
 
-#ifdef _MAC
-#else
     if (imageSurfaces[image]->format->palette == NULL) {
         SDL_Color colors[256];
         for (int i = 0; i < 256; i++)
@@ -1050,8 +678,6 @@ void PlatformSDL::displayImage(Image image)
     }
 
     palette = imageSurfaces[image]->format->palette;
-#endif
-
     loadedImage = image;
 }
 #endif
@@ -1186,11 +812,7 @@ void PlatformSDL::renderTile(uint8_t tile, uint16_t x, uint16_t y, uint8_t varia
 void PlatformSDL::renderTiles(uint8_t backgroundTile, uint8_t foregroundTile, uint16_t x, uint16_t y, uint8_t backgroundVariant, uint8_t foregroundVariant)
 {
     SDL_SetClipRect(bufferSurface, &clipRect);
-#ifdef _MAC
-    GWorldPtr backgroundSurface = tileSurface;
-#else
     SDL_Surface* backgroundSurface = tileSurface;
-#endif
 #ifdef PLATFORM_IMAGE_BASED_TILES
     if (animTileMap[backgroundTile] >= 0) {
         backgroundTile = animTileMap[backgroundTile] + backgroundVariant;
@@ -1390,10 +1012,8 @@ void PlatformSDL::renderLiveMapUnits(uint8_t* map, uint8_t* unitTypes, uint8_t* 
                 int y = unitY[i];
                 SDL_Rect clearRect = { LIVE_MAP_ORIGIN_X + x * 3, LIVE_MAP_ORIGIN_Y + y * 3, 3, 3 };
                 SDL_Color* color = &palette->colors[(i > 0 || playerColor == 1) ? 1 : 0];
-#ifdef _MAC
-#else
                 SDL_FillRect(bufferSurface, &clearRect, SDL_MapRGB(bufferSurface->format, color->r, color->g, color->b));
-#endif
+
                 ::unitTypes[i] = i == 0 ? playerColor : unitTypes[i];
                 ::unitX[i] = unitX[i];
                 ::unitY[i] = unitY[i];
@@ -1510,10 +1130,7 @@ void PlatformSDL::writeToScreenMemory(address_t address, uint8_t value)
     destinationRect.y = (address / SCREEN_WIDTH_IN_CHARACTERS) << 3;
     destinationRect.w = 8;
     destinationRect.h = 8;
-#ifdef _MAC
-#else
     SDL_SetSurfaceColorMod(fontSurface, 0x77, 0xbb, 0x55);
-#endif
     SDL_BlitSurface(fontSurface, &sourceRect, bufferSurface, &destinationRect);
 }
 
@@ -1528,10 +1145,7 @@ void PlatformSDL::writeToScreenMemory(address_t address, uint8_t value, uint8_t 
     destinationRect.y = ((address / SCREEN_WIDTH_IN_CHARACTERS) << 3) + yOffset;
     destinationRect.w = 8;
     destinationRect.h = 8;
-#ifdef _MAC
-#else
     SDL_SetSurfaceColorMod(fontSurface, palette->colors[color].r, palette->colors[color].g, palette->colors[color].b);
-#endif
     SDL_BlitSurface(fontSurface, &sourceRect, bufferSurface, &destinationRect);
 }
 
@@ -1672,9 +1286,6 @@ void PlatformSDL::renderFrame(bool)
 
     SDL_Rect bufferRect = { 0, 0, loadedImage == ImageGame ? PLATFORM_SCREEN_WIDTH : 320, loadedImage == ImageGame ? PLATFORM_SCREEN_HEIGHT : 200 };
     SDL_Rect windowRect = { 0, 0, PLATFORM_SCREEN_WIDTH, PLATFORM_SCREEN_HEIGHT };
-#ifdef _MAC
-	//fprintf(debugf,"Going to SDL_BlitScaled to window...\n");
-#endif
     SDL_BlitScaled(bufferSurface, &bufferRect, windowSurface, &windowRect);
     if (fadeIntensity != 15) {
         uint32_t intensity = (15 - fadeIntensity) << 24;
@@ -1685,4 +1296,3 @@ void PlatformSDL::renderFrame(bool)
     }
     SDL_UpdateWindowSurface(window);
 }
-
