@@ -42,10 +42,10 @@
 #define SDL_SCANCODE_F1 1
 #define SDL_SCANCODE_F2 2
 #define SDL_SCANCODE_F6 6
-#define SDL_SCANCODE_LEFT 10
-#define SDL_SCANCODE_RIGHT 11
-#define SDL_SCANCODE_UP 12
-#define SDL_SCANCODE_DOWN 13
+#define SDL_SCANCODE_LEFT 28
+#define SDL_SCANCODE_RIGHT 29
+#define SDL_SCANCODE_UP 30
+#define SDL_SCANCODE_DOWN 31
 #define SDL_SCANCODE_ESCAPE 100
 #define SDL_SCANCODE_RSHIFT 1000
 #define SDL_SCANCODE_LSHIFT 1001
@@ -85,7 +85,12 @@ struct SDL_MyFormat {
 
 struct SDL_Surface {
   SDL_MyFormat *format;
-  GWorldPtr g;
+  //GWorldPtr g;
+  PixMap *g;
+  Rect r;
+  int width,height,depth;
+  bool isReallyWin;
+  char *name;
 };
 
 
@@ -121,6 +126,8 @@ struct SDL_Event {
   SDL_MyJButton jbutton;
 };
 
+
+extern SDL_Window *theOnlySDLWindow;
 
 #define main(a,b) SDL_main(a,b)
 
